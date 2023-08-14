@@ -24,6 +24,7 @@ bash setup.sh
 
 This should create a conda environment named einet_ccle, install the required python dependencies and then download the MNIST and F-MNIST datasets.
 
+
 #### Training an EiNet Model
 To train an EiNet model via CCLE or MLE, execute the following command 
 ```
