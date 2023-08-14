@@ -325,13 +325,13 @@ class EinsumNetwork(torch.nn.Module):
             # conditional log-likelihood.
             if torch.rand((1,), device=self.args.device) <= patch_prob:
                 if grid_sampling:
-                    sample = grid_window_sampling(
+                    sample = grid_sample(
                         img_width, img_height, marginal_window_width, marginal_window_height, grid_prob, device=self.args.device)
                 elif bisection_sampling:
-                    sample = bisection_sampling(
+                    sample = bisection_sample(
                         img_width, img_height, n_bisects=num_bin_bisections, device=self.args.device)
                 else:
-                    sample = uniform_random_sampling(
+                    sample = uniform_random_sample(
                         img_width, img_height, marginal_window_width, marginal_window_height, device=self.args.device)
 
                 # Set marginalization indices to those of the sampled window.
@@ -489,7 +489,7 @@ class EinsumNetwork(torch.nn.Module):
         return avg_cll, cll_bpd_std, cll_tracker
 
 
-def uniform_random_sampling(img_width, img_height, marginal_window_width, marginal_window_height, device='cuda') -> torch.Tensor:
+def uniform_random_sample(img_width, img_height, marginal_window_width, marginal_window_height, device='cuda') -> torch.Tensor:
     """
     Uniformly sample a window (rectangular subset of pixels) from an image with dimensions img_width x img_height whose
     pixels are ordered linearly across rows Also can generate tensor of indices for a batch of images for test set evaluation.
@@ -524,7 +524,7 @@ def uniform_random_sampling(img_width, img_height, marginal_window_width, margin
     return sample
 
 
-def grid_window_sampling(img_width, img_height, marginal_window_width, marginal_window_height, gamma=1.0, border=0, device='cuda') -> torch.Tensor:
+def grid_sample(img_width, img_height, marginal_window_width, marginal_window_height, gamma=1.0, border=0, device='cuda') -> torch.Tensor:
     """Method of sampling a patch window for ccl training using grid patching. This splits an image into a grid of patches, which
     are then sampled with probability gamma. The inital top left corner of the grid is sampled uniformly from the top left
     corner of the image with patch dimensions around index (0,0), which allows for random translations of the grid.
@@ -583,7 +583,7 @@ def grid_window_sampling(img_width, img_height, marginal_window_width, marginal_
     return sample
 
 
-def bisection_sampling(img_width, img_height, n_bisects, device='cuda') -> torch.Tensor:
+def bisection_sample(img_width, img_height, n_bisects, device='cuda') -> torch.Tensor:
     """Function that samples a patch window for ccl training using bisection sampling. This splits an image into a set of
     symmetric binary bisections, which are then sampled uniformly. The number of bisections is given by n_bisects.
 
@@ -598,21 +598,21 @@ def bisection_sampling(img_width, img_height, n_bisects, device='cuda') -> torch
     """
 
     # Calculate the centre of the image alongisde the number of bisctions and the angle of each bisecting line. Note
-    # here we are using cartesian coordinates.
+    # here we are using cartesian coordinates for ease.
     center_x, center_y = (img_width-1) // 2, (img_height - 1) // 2
     n__bin_segments = 2 ** n_bisects
     segment_angle = np.pi / n__bin_segments
     indices_set = []
 
     # Create grid of indicies for the image.
-    x, y = torch.meshgrid(torch.arange(img_width), torch.arange(img_height))
+    y, x = torch.meshgrid(torch.arange(img_height), torch.arange(img_width))
     x, y = x.to(device), y.to(device)
 
     # Loop through each bisecting line and append the pixels corresponding to the two halves of the image.
     for segment_index in range(int(np.pi // segment_angle)):
         upper_half_indices = []
         lower_half_indices = []
-        theta = segment_angle * segment_index
+        theta = segment_angle * float(segment_index)
 
         # Randomly decide which half contains the bisecting line.
         line_in_upper_half = torch.rand(1).item() < 0.5

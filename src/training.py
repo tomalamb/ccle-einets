@@ -319,7 +319,6 @@ def main(args: argparse.Namespace) -> None:
                             patch_dims["width"],
                             patch_dims["height"],
                             patch_prob,
-                            split_patching=split_patching,
                             grid_sampling=grid_patch,
                             grid_prob=grid_prob,
                             bisection_sampling=bisection_sampling,
