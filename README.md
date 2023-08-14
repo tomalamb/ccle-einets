@@ -33,27 +33,27 @@ Below we give three examples of how to train EiNets using SGD for MLE, and then 
 
    a. MLE trained model using SGD, $\text{SGD}$ model:
 
-    
+
     python src/training.py -K 32 --max_num_epochs 64 --batch_size 100 --sgd --lr 0.01 --dataset f_mnist --patience 8 --pd_deltas 7,28
-       
+         
 
    b. Uniform random sampling, $\text{RAND}_4$ model:
 
-    ```
+    
     python src/training.py -K 32 --max_num_epochs 64 --batch_size 100 --ccle --lr 0.01 --dataset f_mnist --patience 8 --pd_deltas 7,28 --patch_size 4
-    ```
+    
 
    c. Bisection sampling, $\text{BIS}_{n_{\text{bis}} = 32}$ model:
 
-    ```
+    
     python src/training.py -K 32 --max_num_epochs 64 --batch_size 100 --ccle --lr 0.01 --dataset f_mnist --patience 8 --pd_deltas 7,28 --patch_size 8  --bisection_sampling --num_bin_bisections 5
-    ```
+    
 
    d. Grid sampling, $\text{GRID}_{4, \gamma = 0.8889}$ model:
 
-    ```
+    
     python src/training.py -K 32 --max_num_epochs 64 --batch_size 100 --ccle --lr 0.01 --dataset f_mnist --patience 8 --pd_deltas 7,28 --patch_size 8 --grid_sampling --grid_prob 0.8889
-    ```
+    
 
 #### Test Evaluation
 We take as an example, the $\text{RAND}_4$ model whcih you can train using the above command. We now list three command so that you can evaluate the test CCLL, $\text{FID}$ and $\text{FID}_{\text{inp}}$ scores for this model.
