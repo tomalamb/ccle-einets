@@ -24,7 +24,7 @@ python src/datasets.py
 
 #### Training an EiNet Model
 To train an EiNet model via CCLE or MLE, execute the following command 
-```
+```s
 python src/test_ccll_evaluation.py --command_line_arguments
 ```
 adding the the command line arguments as you need for training. 
@@ -34,7 +34,9 @@ Below we give three examples of how to train EiNets using SGD for MLE, and then 
       ```python src/training.py -K 32 --max_num_epochs 64 --batch_size 100 --sgd --lr 0.01 --dataset f_mnist --patience 8 --pd_deltas 7,28```
 
    b. Uniform random sampling, $\text{RAND}_4$ model:
-      ```python src/training.py -K 32 --max_num_epochs 64 --batch_size 100 --ccle --lr 0.01 --dataset f_mnist --patience 8 --pd_deltas 7,28 --patch_size 4```
+      ```
+      python src/training.py -K 32 --max_num_epochs 64 --batch_size 100 --ccle --lr 0.01 --dataset f_mnist --patience 8 --pd_deltas 7,28 --patch_size 4
+      ```
 
    c. Bisection sampling, $\text{BIS}_{n_\text{bis} = 32}$ model:
       ```python src/training.py -K 32 --max_num_epochs 64 --batch_size 100 --ccle --lr 0.01 --dataset f_mnist --patience 8 --pd_deltas 7,28 --patch_size 8  --bisection_sampling --num_bin_bisections 5```
