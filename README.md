@@ -60,19 +60,19 @@ We take as an example, the $\text{RAND}_4$ model whcih you can train using the a
 
     a. Test CCL scores.
 
-
+        ```
         python src/test_ccll_evaluation.py -K 32 --pd_deltas 7,28 --patch_size 4  --dataset f_mnist  --ccll_test 
-    
+        ```
 
     b. FID scores.
 
-
+        ```
         python src/test_ccll_evaluation.py -K 32 --pd_deltas 7,28 --patch_size 4  --dataset f_mnist  --fid 
-
+        ```
 
     c. Inpainted FID scores.
 
-
+        ```
         python src/test_ccll_evaluation.py -K 32 --pd_deltas 7,28 --patch_size 4  --dataset f_mnist  --fid_inpaint 
-    
+        ```
 
