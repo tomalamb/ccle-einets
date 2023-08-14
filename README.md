@@ -1,0 +1,14 @@
+# Edinburgh MSc AI Dissertation - Alternative Methods of Unsupervised Learning of Tractable Generative Models.
+
+Code associated with my dissertation on looking into alternative methods of training tractable generative models trainined. Specifically, we focus on Einsum Networks, which are a more general and efficient vectorised form of probablistic circuits (PC) and look into whether maximum conditional composite log-likelihood estimation (MCCLE) can act as a viable altertive for training EiNets over MLE training.
+
+**Abstract**: *Einsum Networks (EiNets) are an efficient implementation of a general class of probabilistic models known as probabilistic circuits (PCs). These models have advantages over expressive generative models such as VAEs and GANs due to their ability to allow for exact and efficient probabilistic inference. However, as PCs grow in the number of parameters, they become more challenging to train and have been shown to be susceptible to ubiquitous problems in deep learning such as overfitting when trained via maximum likelihood estimation (MLE). Motivated by these problems when using MLE, we explore an alternative parameter learning method which is particularly applicable to EiNets known as maximum conditional composite log-likelihood estimation (MCCLE). We propose three methods of implementing MCCLE for EiNets: uniform random sampling, bisection sampling and grid sampling. In our experiments on MNIST and F-MNIST, we observe that MCCLE training shows promise as a valid alternative density estimation scheme over MLE, acting as a form of regularisation during training and for providing greater inpainting capabilities. However, we note that these findings are dependent on the MCCLE method used, the sizes of the patches chosen for conditional training and the information density of the datasets that they are trained on.*
+
+Code builds upon and utlises the existing codebase by Peharz *et al.* (2020) in their paper:
+
+R. Peharz, S. Lang, A. Vergari, K. Stelzner, A. Molina, M. Trapp, G. Van den Broeck, K. Kersting, Z. Ghahramani,
+**Einsum Networks: Fast and Scalable Learning of Tractable Probabilistic Circuits**,
+*ICML 2020*.
+
+The following is a link to their original repository: [Einsum Networks](https://github.com/cambridge-mlg/EinsumNetworks)
+
