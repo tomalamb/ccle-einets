@@ -3,12 +3,12 @@
 source ~/.bashrc
 
 # Setup conda environment.
-CONDA_ENV_NAME=pcs
+CONDA_ENV_NAME=einet_ccle
 conda env list | grep "${CONDA_ENV_NAME}" &> /dev/null
 
 # If environment doesn't exit, create it. Then activate it.
 if [ $? -eq 1 ]; then
-    echo "Creating Conda environment 'pcs'..."
+    echo "Creating Conda environment 'einet_ccle'..."
     conda env create --file environment.yml
 fi
 conda activate ${CONDA_ENV_NAME}

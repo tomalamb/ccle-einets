@@ -172,7 +172,8 @@ def main(args: argparse.Namespace) -> None:
     if grid_sampling:
         print(
             f"Using grid patching with grid patch size: {grid_sampling} with grid patch probability: {grid_prob}")
-        identifier = identifier + f'_grid_sampling_{grid_sampling}/prob_{grid_prob}'
+        identifier = identifier + \
+            f'_grid_sampling_{grid_sampling}/prob_{grid_prob}'
         wandb_project = wandb_project + '_grid_sampling'
         output_dir = output_dir + \
             f'/ccle_training/{dataset_name}/patch_size_{str(patch_dims["width"])}_{str(patch_dims["height"])}/patch_prob_{str(patch_prob)}/grid_sampling/grid_prob_{grid_prob}/'
@@ -187,6 +188,8 @@ def main(args: argparse.Namespace) -> None:
         print("Using uniform random patching")
         output_dir = output_dir + \
             f'/ccle_training/{dataset_name}/patch_size_{str(patch_dims["width"])}_{str(patch_dims["height"])}/patch_prob_{str(patch_prob)}/'
+        identifier = identifier + \
+            f'_patch_prob_{str(patch_prob)}_patch_size_{str(patch_dims["width"])}_{str(patch_dims["height"])}'
 
     # Keep track of lls for each epoch of each run.
     run_lls = []

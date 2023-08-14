@@ -26,7 +26,6 @@ src/full_conditional_training.py
 src/full_conditional_training.sh
 config_ssh.sh
 src/mle_finetuning.sh
-src/mle_finetuning.py
 src/curriculum_training.py
 src/curriculum_training.sh
 data/output
