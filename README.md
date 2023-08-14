@@ -56,7 +56,7 @@ Below we give three examples of how to train EiNets using SGD for MLE, and then 
     
 
 #### Test Evaluation
-We take as an example, the $\text{RAND}_4$ model whcih you can train using the above command. We now list three command so that you can evaluate the test CCLL, $\text{FID}$ and $\text{FID}_{inp}$ scores for this model.
+We take as an example, the $\text{RAND}_{4}$ model whcih you can train using the above command. We now list three command so that you can evaluate the test CCLL, $\text{FID}$ and $\text{FID}_{inp}$ scores for this model.
 
    a. Test CCL scores:
 
