@@ -28,4 +28,4 @@ config_ssh.sh
 src/mle_finetuning.sh
 src/curriculum_training.py
 src/curriculum_training.sh
-data/output
+data/
