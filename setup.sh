@@ -13,9 +13,6 @@ if [ $? -eq 1 ]; then
 fi
 conda activate ${CONDA_ENV_NAME}
 
-# Install requirements and dependencies for GPU useage.
-conda install pytorch torchvision torchaudio pytorch-cuda=11.7 -c pytorch -c nvidia
-
 # Download datasets for training to the DFS.
 cd src
 python datasets.py
