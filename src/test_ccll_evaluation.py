@@ -7,7 +7,7 @@ import os
 import numpy as np
 import matplotlib.pyplot as plt
 from pytorch_fid import fid_score
-from EinsumNetwork.EinsumNetwork import window_sample
+from EinsumNetwork.EinsumNetwork import uniform_random_sample
 import pickle as pkl
 import random
 
@@ -16,24 +16,24 @@ def parse_args() -> argparse.Namespace:
     """Parse command-line arguments for evaluation of EiNet models."""
     parser = argparse.ArgumentParser(
         description='EiNet CLL test evaluation argument parser.')
-    parser.add_argument('--data_i', type=str, default='../data/datasets/', metavar='D',
-                        help='directory where the input data is stored (default: ../data/input/datasets/)')
-    parser.add_argument('--model_i', type=str, default='../data/output/cll_training/', metavar='D',
-                        help='directory where the EiNet models to be evaluated are stored (default: ../data/output/cll_training/)')
+    parser.add_argument('--data_i', type=str, default='data/datasets', metavar='D',
+                        help='directory where the input data is stored (default: data/input/datasets)')
+    parser.add_argument('--model_i', type=str, default='data/output', metavar='D',
+                        help='directory where the EiNet models to be evaluated are stored (default: data/output)')
     parser.add_argument('-K', type=int, default=32, metavar='D',
                         help='number of vectorised distributions in sum nodes and leaf inputs (default: 32)')
-    parser.add_argument('-o', type=str, default='../data/output/cll_evaluation/', metavar='D',
-                        help='directory where the outputs of training are to be stored (default: ../data/output/cll_evaluation/)')
+    parser.add_argument('-o', type=str, default='data/output/', metavar='D',
+                        help='directory where the outputs of training are to be stored (default: data/output/ccle_evaluation)')
     parser.add_argument("--test_samples_per_img", type=int, default=3,
-                        help="Number of samples to use for CLL testing per img (default: 3).")
+                        help="Number of samples to use for ccll testing per img (default: 3).")
     parser.add_argument('--pd_deltas', type=str, default='7,28', metavar='D',
                         help='Poon-Domingos structre delta step sizes for image splits (default: 7,28)')
     parser.add_argument("--dataset", type=str, default="mnist",
                         help="Dataset to use (default: mnist).")
     parser.add_argument("--patch_prob", type=str, default=1.0,
-                        help="Patching probability used for CLL training (default: 1.0).")
+                        help="Patching probability used for ccll training (default: 1.0).")
     parser.add_argument('--patch_size', type=str, default='4,4', metavar='D',
-                        help='Window width and height (in this order) for sampled marginal during CLL training.')
+                        help='Window width and height (in this order) for sampled marginal during clle training.')
     parser.add_argument('--sgd', action='store_true',
                         help='Whether to evaluate FID score on MLE sgd-trained models')
     parser.add_argument('--em', action='store_true',
@@ -50,7 +50,7 @@ def parse_args() -> argparse.Namespace:
                         help='Number of binary bisections used in bisection sampling.')
     parser.add_argument("--lr", type=float, default=0.01,
                         help='Learning rate used for MLE finetuning.')
-    parser.add_argument("--grid_patching", action='store_true',
+    parser.add_argument("--grid_sampling", action='store_true',
                         help='Boolean to indicate if want to evaluate grid patching.')
     parser.add_argument("--bisection_sampling", action='store_true',
                         help='Boolean to indicate if want to evaluate bisection sampling.')
@@ -58,7 +58,7 @@ def parse_args() -> argparse.Namespace:
     return parser.parse_args()
 
 
-def cll_evaluation(args) -> None:
+def ccll_evaluation(args) -> None:
     """Script that evaluates CCLLs of EiNet on the test set of a chosen dataset, results are saved in a csv file."""
     # Load command line arguments.
     data_input_dir = args.data_i
@@ -74,7 +74,7 @@ def cll_evaluation(args) -> None:
     sgd = args.sgd
     em = args.em
     num_bin_bisections = args.num_bin_bisections
-    grid_patching = args.grid_patching
+    grid_sampling = args.grid_sampling
     bisection_sampling = args.bisection_sampling
 
     # Argument checking.
@@ -93,28 +93,28 @@ def cll_evaluation(args) -> None:
         dataset = Dataset.MNIST
         img_dims = {'height': 28, 'width': 28}
         num_pixel_vars = img_dims['height'] * img_dims['width']
-        data_input_dir = data_input_dir + 'mnist/'
+        data_input_dir = data_input_dir + '/mnist/'
     elif dataset_name == 'f_mnist':
         dataset = Dataset.F_MNIST
         img_dims = {'height': 28, 'width': 28}
         num_pixel_vars = img_dims['height'] * img_dims['width']
-        data_input_dir = data_input_dir + 'f_mnist/'
+        data_input_dir = data_input_dir + '/f_mnist/'
 
     # Setup input and output directories.
-    if grid_patching:
+    if grid_sampling:
         # Grid patching evaluation.
         print(f'Evaluating test CCLL of grid patching model with grid prob {grid_prob} and patch size {str(patch_window_dims["width"])}, {str(patch_window_dims["height"])}')
         model_input_dir = model_input_dir + \
-            f'cll_training/{dataset_name}/patch_size_{str(patch_window_dims["width"])}_{str(patch_window_dims["height"])}/patch_prob_{patch_prob}/grid_patch/grid_prob_{grid_prob}/models/'
+            f'/ccle_training/{dataset_name}/patch_size_{str(patch_window_dims["width"])}_{str(patch_window_dims["height"])}/patch_prob_{patch_prob}/grid_patch/grid_prob_{grid_prob}/models/'
         output_dir = output_dir + \
-            f'cll_evaluation/{dataset_name}/patch_size_{str(patch_window_dims["width"])}_{str(patch_window_dims["height"])}/patch_prob_{patch_prob}/grid_patch/grid_prob_{grid_prob}/'
+            f'/ccle_evaluation/{dataset_name}/patch_size_{str(patch_window_dims["width"])}_{str(patch_window_dims["height"])}/patch_prob_{patch_prob}/grid_patch/grid_prob_{grid_prob}/'
     elif bisection_sampling:
         # Bisection sampling.
         print(f"Evaluating test CCLL of bisection sampling model with {num_bin_bisections} bisections.")
         model_input_dir = model_input_dir + \
-            f'cll_training/{dataset_name}/patch_prob_{patch_prob}/bisection_sampling/num_bin_bisections_{num_bin_bisections}/models/'
+            f'/ccle_training/{dataset_name}/bisection_sampling/num_bin_bisections_{num_bin_bisections}/models/'
         output_dir = output_dir + \
-            f'cll_evaluation/{dataset_name}/patch_prob_{patch_prob}/bisection_sampling/num_bin_bisections_{num_bin_bisections}/'
+            f'/ccle_evaluation/{dataset_name}/bisection_sampling/num_bin_bisections_{num_bin_bisections}/'
     elif sgd:
         # SGD MLE baseline evaluation.
         print(f"Evaluating test CCLL of SGD MLE baseline model.")
@@ -129,9 +129,9 @@ def cll_evaluation(args) -> None:
         # Uniform random sampling evaluation.
         print(f"Evaluating test CCLL of uniform random sampling model with patch size {str(patch_window_dims['width'])}, {str(patch_window_dims['height'])}")
         model_input_dir = model_input_dir + \
-            f'cll_training/{dataset_name}/patch_size_{str(patch_window_dims["width"])}_{str(patch_window_dims["height"])}/patch_prob_{patch_prob}/models/'
+            f'/ccle_training/{dataset_name}/patch_size_{str(patch_window_dims["width"])}_{str(patch_window_dims["height"])}/patch_prob_{patch_prob}/models/'
         output_dir = output_dir + \
-            f'cll_evaluation/{dataset_name}/patch_size_{str(patch_window_dims["width"])}_{str(patch_window_dims["height"])}/patch_prob_{patch_prob}/'
+            f'/ccle_evaluation/{dataset_name}/patch_size_{str(patch_window_dims["width"])}_{str(patch_window_dims["height"])}/patch_prob_{patch_prob}/'
 
     # Load test data.
     _, _, test_x, _ = load_data(dataset, data_input_dir)
@@ -239,7 +239,7 @@ def fid_evaluation(args):
     grid_prob = args.grid_prob
     num_bin_bisections = args.num_bin_bisections
     em = args.em
-    grid_patching = args.grid_patching
+    grid_sampling = args.grid_sampling
     bisection_sampling = args.bisection_sampling
 
     # Argument checking.
@@ -258,45 +258,45 @@ def fid_evaluation(args):
         dataset = Dataset.MNIST
         img_dims = {'height': 28, 'width': 28}
         num_pixel_vars = img_dims['height'] * img_dims['width']
-        data_input_dir = data_input_dir + 'mnist/'
+        data_input_dir = data_input_dir + '/mnist/'
     elif dataset_name == 'f_mnist':
         dataset = Dataset.F_MNIST
         img_dims = {'height': 28, 'width': 28}
         num_pixel_vars = img_dims['height'] * img_dims['width']
-        data_input_dir = data_input_dir + 'f_mnist/'
+        data_input_dir = data_input_dir + '/f_mnist/'
     
     # Setup input and output directories.
-    if grid_patching:
+    if grid_sampling:
         # Grid patching evaluation.
-        print(f'Computing FID scores for grid patching model with grid prob {grid_prob} and patch size {str(patch_window_dims["width"])}, {str(patch_window_dims["height"])}')
+        print(f'Evaluating FID scores of grid patching model with grid prob {grid_prob} and patch size {str(patch_window_dims["width"])}, {str(patch_window_dims["height"])}')
         model_input_dir = model_input_dir + \
-            f'cll_training/{dataset_name}/patch_size_{str(patch_window_dims["width"])}_{str(patch_window_dims["height"])}/patch_prob_{patch_prob}/grid_patch/grid_prob_{grid_prob}/models/'
+            f'/ccle_training/{dataset_name}/patch_size_{str(patch_window_dims["width"])}_{str(patch_window_dims["height"])}/patch_prob_{patch_prob}/grid_patch/grid_prob_{grid_prob}/models/'
         output_dir = output_dir + \
-            f'cll_evaluation/{dataset_name}/patch_size_{str(patch_window_dims["width"])}_{str(patch_window_dims["height"])}/patch_prob_{patch_prob}/grid_patch/grid_prob_{grid_prob}/'
+            f'/ccle_evaluation/{dataset_name}/patch_size_{str(patch_window_dims["width"])}_{str(patch_window_dims["height"])}/patch_prob_{patch_prob}/grid_patch/grid_prob_{grid_prob}/'
     elif bisection_sampling:
         # Bisection sampling.
-        print(f"Computing FID scores for bisection sampling model with {num_bin_bisections} bisections.")
+        print(f"Evaluating FID scores of bisection sampling model with {num_bin_bisections} bisections.")
         model_input_dir = model_input_dir + \
-            f'cll_training/{dataset_name}/patch_prob_{patch_prob}/bisection_sampling/num_bin_bisections_{num_bin_bisections}/models/'
+            f'/ccle_training/{dataset_name}/bisection_sampling/num_bin_bisections_{num_bin_bisections}/models/'
         output_dir = output_dir + \
-            f'cll_evaluation/{dataset_name}/patch_prob_{patch_prob}/bisection_sampling/num_bin_bisections_{num_bin_bisections}/'
+            f'/ccle_evaluation/{dataset_name}/bisection_sampling/num_bin_bisections_{num_bin_bisections}/'
     elif sgd:
         # SGD MLE baseline evaluation.
-        print(f"Computing FID scores for SGD MLE baseline model.")
+        print(f"Evaluating FID scores of SGD MLE baseline model.")
         model_input_dir = model_input_dir + f'baselines/{dataset_name}/sgd/models/'
         output_dir = output_dir + f'baseline_evaluation/{dataset_name}/sgd/'
     elif em:
         # EM baseline evaluation.
-        print(f"Computing FID scores for EM baseline model.")
+        print(f"Evaluating FID scores of EM baseline model.")
         model_input_dir = model_input_dir + f'baselines/{dataset_name}/em/models/'
         output_dir = output_dir + f'baseline_evaluation/{dataset_name}/em/'
     else:
         # Uniform random sampling evaluation.
-        print(f"Computing FID scores for uniform random sampling model with patch size {str(patch_window_dims['width'])}, {str(patch_window_dims['height'])}")
+        print(f"Evaluating FID scores of uniform random sampling model with patch size {str(patch_window_dims['width'])}, {str(patch_window_dims['height'])}")
         model_input_dir = model_input_dir + \
-            f'cll_training/{dataset_name}/patch_size_{str(patch_window_dims["width"])}_{str(patch_window_dims["height"])}/patch_prob_{patch_prob}/models/'
+            f'/ccle_training/{dataset_name}/patch_size_{str(patch_window_dims["width"])}_{str(patch_window_dims["height"])}/patch_prob_{patch_prob}/models/'
         output_dir = output_dir + \
-            f'cll_evaluation/{dataset_name}/patch_size_{str(patch_window_dims["width"])}_{str(patch_window_dims["height"])}/patch_prob_{patch_prob}/'
+            f'/ccle_evaluation/{dataset_name}/patch_size_{str(patch_window_dims["width"])}_{str(patch_window_dims["height"])}/patch_prob_{patch_prob}/'
 
     # Load test data.
     _, _, test_x, _ = load_data(dataset, data_input_dir)
@@ -404,7 +404,7 @@ def fid_inpainting_evaluation(args):
     grid_prob = args.grid_prob
     num_bin_bisections = args.num_bin_bisections
     em = args.em
-    grid_patching = args.grid_patching
+    grid_sampling = args.grid_sampling
     bisection_sampling = args.bisection_sampling
 
     # Uses the same window patches as for test CCLL evaluation.
@@ -426,46 +426,46 @@ def fid_inpainting_evaluation(args):
         dataset = Dataset.MNIST
         img_dims = {'height': 28, 'width': 28}
         num_pixel_vars = img_dims['height'] * img_dims['width']
-        data_input_dir = data_input_dir + 'mnist/'
+        data_input_dir = data_input_dir + '/mnist/'
     elif dataset_name == 'f_mnist':
         dataset = Dataset.F_MNIST
         img_dims = {'height': 28, 'width': 28}
         num_pixel_vars = img_dims['height'] * img_dims['width']
-        data_input_dir = data_input_dir + 'f_mnist/'
+        data_input_dir = data_input_dir + '/f_mnist/'
 
     # Setup input and output directories.
-    if grid_patching:
+    if grid_sampling:
         # Grid patching evaluation.
-        print(f'Computing FID inpainting scores for grid patching model with grid prob {grid_prob} and patch size {str(patch_window_dims["width"])}, {str(patch_window_dims["height"])}')
+        print(f'Evaluating inpainted FID scores of grid patching model with grid prob {grid_prob} and patch size {str(patch_window_dims["width"])}, {str(patch_window_dims["height"])}')
         model_input_dir = model_input_dir + \
-            f'cll_training/{dataset_name}/patch_size_{str(patch_window_dims["width"])}_{str(patch_window_dims["height"])}/patch_prob_{patch_prob}/grid_patch/grid_prob_{grid_prob}/models/'
+            f'/ccle_training/{dataset_name}/patch_size_{str(patch_window_dims["width"])}_{str(patch_window_dims["height"])}/patch_prob_{patch_prob}/grid_patch/grid_prob_{grid_prob}/models/'
         output_dir = output_dir + \
-            f'cll_evaluation/{dataset_name}/patch_size_{str(patch_window_dims["width"])}_{str(patch_window_dims["height"])}/patch_prob_{patch_prob}/grid_patch/grid_prob_{grid_prob}/'
+            f'/ccle_evaluation/{dataset_name}/patch_size_{str(patch_window_dims["width"])}_{str(patch_window_dims["height"])}/patch_prob_{patch_prob}/grid_patch/grid_prob_{grid_prob}/'
     elif bisection_sampling:
         # Bisection sampling.
-        print(f"Computing FID inpainting scores for bisection sampling model with {num_bin_bisections} bisections.")
+        print(f"Evaluating inpainted FID scores of bisection sampling model with {num_bin_bisections} bisections.")
         model_input_dir = model_input_dir + \
-            f'cll_training/{dataset_name}/patch_prob_{patch_prob}/bisection_sampling/num_bin_bisections_{num_bin_bisections}/models/'
+            f'/ccle_training/{dataset_name}/bisection_sampling/num_bin_bisections_{num_bin_bisections}/models/'
         output_dir = output_dir + \
-            f'cll_evaluation/{dataset_name}/patch_prob_{patch_prob}/bisection_sampling/num_bin_bisections_{num_bin_bisections}/'
+            f'/ccle_evaluation/{dataset_name}/bisection_sampling/num_bin_bisections_{num_bin_bisections}/'
     elif sgd:
         # SGD MLE baseline evaluation.
-        print(f"Computing FID inpainting scores for SGD MLE baseline model.")
+        print(f"Evaluating inpainted FID scores of SGD MLE baseline model.")
         model_input_dir = model_input_dir + f'baselines/{dataset_name}/sgd/models/'
         output_dir = output_dir + f'baseline_evaluation/{dataset_name}/sgd/'
     elif em:
         # EM baseline evaluation.
-        print(f"Computing FID inpainting scores for EM baseline model.")
+        print(f"Evaluating inpainted FID scores of EM baseline model.")
         model_input_dir = model_input_dir + f'baselines/{dataset_name}/em/models/'
         output_dir = output_dir + f'baseline_evaluation/{dataset_name}/em/'
     else:
         # Uniform random sampling evaluation.
-        print(f"Computing FID inpainting scores for uniform random sampling model with patch size {str(patch_window_dims['width'])}, {str(patch_window_dims['height'])}")
+        print(f"Evaluating inpainted FID scores of uniform random sampling model with patch size {str(patch_window_dims['width'])}, {str(patch_window_dims['height'])}")
         model_input_dir = model_input_dir + \
-            f'cll_training/{dataset_name}/patch_size_{str(patch_window_dims["width"])}_{str(patch_window_dims["height"])}/patch_prob_{patch_prob}/models/'
+            f'/ccle_training/{dataset_name}/patch_size_{str(patch_window_dims["width"])}_{str(patch_window_dims["height"])}/patch_prob_{patch_prob}/models/'
         output_dir = output_dir + \
-            f'cll_evaluation/{dataset_name}/patch_size_{str(patch_window_dims["width"])}_{str(patch_window_dims["height"])}/patch_prob_{patch_prob}/'
-
+            f'/ccle_evaluation/{dataset_name}/patch_size_{str(patch_window_dims["width"])}_{str(patch_window_dims["height"])}/patch_prob_{patch_prob}/'
+        
     # Load test data.
     _, _, test_x, _ = load_data(dataset, data_input_dir)
     device = 'cuda' if torch.cuda.is_available() else 'cpu'
@@ -482,7 +482,7 @@ def fid_inpainting_evaluation(args):
             # Sample patch from image, reshaping to inpatch_patch_size x inpaint_patch_size and then saving.
             # Randomly choose patch size for patch sample from test_sample_windows.
             inpaint_patch_size = random.choice(test_sample_windows)
-            sample = window_sample(img_dims["height"], img_dims["width"],
+            sample = uniform_random_sample(img_dims["height"], img_dims["width"],
                                    inpaint_patch_size[0], inpaint_patch_size[1], device=device).cpu().numpy()
             patch_sample_idxs.append(sample)
 
@@ -568,7 +568,7 @@ def fid_inpainting_evaluation(args):
 if __name__ == '__main__':
     args = parse_args()
     if args.ccll_test:
-        cll_evaluation(args)
+        ccll_evaluation(args)
     elif args.fid:
         fid_evaluation(args)
     elif args.fid_inpaint:

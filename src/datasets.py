@@ -46,10 +46,10 @@ def maybe_download_mnist():
                    't10k-labels-idx1-ubyte.gz']
 
     for file in mnist_files:
-        if not maybe_download('../data/datasets/mnist', 'http://yann.lecun.com/exdb/mnist/', file):
+        if not maybe_download('data/datasets/mnist', 'http://yann.lecun.com/exdb/mnist/', file):
             continue
-        print('unzip ../data/datasets/mnist/{}'.format(file))
-        filepath = os.path.join('../data/datasets/mnist/', file)
+        print('unzip data/datasets/mnist/{}'.format(file))
+        filepath = os.path.join('data/datasets/mnist/', file)
         with gzip.open(filepath, 'rb') as f_in:
             with open(filepath[0:-3], 'wb') as f_out:
                 shutil.copyfileobj(f_in, f_out)
@@ -69,7 +69,7 @@ def load_mnist(path):
     maybe_download_mnist()
 
     if path == None:
-        path = '../data/datasets/mnist'
+        path = 'data/datasets/mnist'
     else:
         data_dir = path
 
@@ -102,10 +102,10 @@ def maybe_download_fashion_mnist():
                    't10k-labels-idx1-ubyte.gz']
 
     for file in mnist_files:
-        if not maybe_download('../data/datasets/f_mnist', 'http://fashion-mnist.s3-website.eu-central-1.amazonaws.com/', file):
+        if not maybe_download('data/datasets/f_mnist', 'http://fashion-mnist.s3-website.eu-central-1.amazonaws.com/', file):
             continue
-        print('unzip ../data/datasets/f_mnist/{}'.format(file))
-        filepath = os.path.join('../data/datasets/f_mnist/', file)
+        print('unzip /data/datasets/f_mnist/{}'.format(file))
+        filepath = os.path.join('data/datasets/f_mnist/', file)
         with gzip.open(filepath, 'rb') as f_in:
             with open(filepath[0:-3], 'wb') as f_out:
                 shutil.copyfileobj(f_in, f_out)
@@ -117,7 +117,7 @@ def load_fashion_mnist(path):
     maybe_download_fashion_mnist()
 
     if path == None:
-        path = '../data/datasets/f_mnist'
+        path = 'data/datasets/f_mnist'
     else:
         data_dir = path
 

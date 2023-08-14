@@ -443,7 +443,7 @@ class EinsumNetwork(torch.nn.Module):
                     for i in range(samples_per_img):
                         # Compute the CCLL for a randomly selected window for the image.
                         sample = torch.tensor(samples[idx][i])
-                        ccll, sample, _ = self.conditional_composite_ll(
+                        ccll, sample, _ = self.ccll(
                             x_test[idx, :].unsqueeze(0), img_width, img_height, patch_window_width, patch_window_height, patch_prob=1.0, sample=sample)
                         # Convert to bits per dimension (scaling by number of pixels in patch instead of total number of pixels in image)
                         ccll_bpd = -ccll / (sample.shape[0] * np.log(2.0))

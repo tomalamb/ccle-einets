@@ -22,8 +22,8 @@ echo "Moving input data to the compute node's scratch space: $SCRATCH_DISK"
 SCRATCH_DISK=/disk/scratch/${USER}
 SCRATCH_HOME=${SCRATCH_DISK}
 mkdir -p ${SCRATCH_HOME}
-src_path=~/EiNets/data/datasets
-dest_path=${SCRATCH_HOME}/EiNets/data/datasets
+src_path=~/ccle_einets/data/datasets
+dest_path=${SCRATCH_HOME}/ccle_einets/data/datasets
 mkdir -p ${dest_path}
 rsync --archive --update --compress --progress ${src_path}/ ${dest_path}
 
@@ -49,16 +49,16 @@ if [ ${CLL_TEST} == "y" ]; then
     # Run ccll test evaluation script.
     if [ ${CLL} == "y" ]; then 
         echo "Running test ccll for cclle model"
-        eval python cll_evaluation.py --data_i /disk/scratch/${USER}/EiNets/data/datasets/ --model_i /disk/scratch/${USER}/EiNets/data/output/ -K 32 -o /disk/scratch/${USER}/EiNets/data/output/ --pd_deltas 7,28 --dataset ${DATASET} --patch_prob ${PATCH_PROB} --patch_size ${PATCH_DIMS} --cll_test
-        src_path=${SCRATCH_HOME}/EiNets/data/output/mccle_evaluation
-        dest_path=~/EiNets/data/output/mccle_evaluation
+        eval python test_ccll_evaluation.py --data_i /disk/scratch/${USER}/ccle_einets/data/datasets --model_i /disk/scratch/${USER}/ccle_einets/data/output -K 32 -o /disk/scratch/${USER}/ccle_einets/data/output --pd_deltas 7,28 --dataset ${DATASET} --patch_prob ${PATCH_PROB} --patch_size ${PATCH_DIMS} --ccll_test
+        src_path=${SCRATCH_HOME}/ccle_einets/data/output/mccle_evaluation
+        dest_path=~/ccle_einets/data/output/mccle_evaluation
         mkdir -p ${dest_path}
     elif [ ${CLL} == "n" ]; then
         # Note that need to change depending on whether you want to evaluate EM or SGD baseline.
         echo "Running test ccll for MLE model"
-        eval python cll_evaluation.py --data_i /disk/scratch/${USER}/EiNets/data/datasets/ --model_i /disk/scratch/${USER}/EiNets/data/output/ -K 32 -o /disk/scratch/${USER}/EiNets/data/output/ --pd_deltas 7,28 --dataset ${DATASET} --em --cll_test
-        src_path=${SCRATCH_HOME}/EiNets/data/output/baseline_evaluation
-        dest_path=~/EiNets/data/output/baseline_evaluation
+        eval python test_ccll_evaluation.py --data_i /disk/scratch/${USER}/ccle_einets/data/datasets --model_i /disk/scratch/${USER}/ccle_einets/data/output -K 32 -o /disk/scratch/${USER}/ccle_einets/data/output --pd_deltas 7,28 --dataset ${DATASET} --em --ccll_test
+        src_path=${SCRATCH_HOME}/ccle_einets/data/output/baseline_evaluation
+        dest_path=~/ccle_einets/data/output/baseline_evaluation
         mkdir -p ${dest_path}
     else
         echo "Invalid argument."
@@ -69,16 +69,16 @@ elif [ ${CLL_TEST} == "n" ]; then
         if [ ${INPAINTING} == "n" ]; then
             # Run FID evaluation script.
             echo "Running fid script for ccle model"
-            eval python cll_evaluation.py --data_i /disk/scratch/${USER}/EiNets/data/datasets/ --model_i /disk/scratch/${USER}/EiNets/data/output/ -K 32 -o /disk/scratch/${USER}/EiNets/data/output/ --pd_deltas 7,28 --dataset ${DATASET} --patch_prob ${PATCH_PROB} --patch_size ${PATCH_DIMS} --fid
-            src_path=${SCRATCH_HOME}/EiNets/data/output/mccle_evaluation
-            dest_path=~/EiNets/data/output/mccle_evaluation/
+            eval python test_ccll_evaluation.py --data_i /disk/scratch/${USER}/ccle_einets/data/datasets --model_i /disk/scratch/${USER}/ccle_einets/data/output -K 32 -o /disk/scratch/${USER}/ccle_einets/data/output --pd_deltas 7,28 --dataset ${DATASET} --patch_prob ${PATCH_PROB} --patch_size ${PATCH_DIMS} --fid
+            src_path=${SCRATCH_HOME}/ccle_einets/data/output/mccle_evaluation
+            dest_path=~/ccle_einets/data/output/mccle_evaluation/
             mkdir -p ${dest_path}
         elif [ ${INPAINTING} == "y" ]; then
             # Run FID inpainting evaluation script.
             echo "Running fid inpainting script for ccle mode"
-            eval python cll_evaluation.py --data_i /disk/scratch/${USER}/EiNets/data/datasets/ --model_i /disk/scratch/${USER}/EiNets/data/output/ -K 32 -o /disk/scratch/${USER}/EiNets/data/output/ --pd_deltas 7,28 --dataset ${DATASET} --patch_prob ${PATCH_PROB} --patch_size ${PATCH_DIMS} --fid_inpaint
-            src_path=${SCRATCH_HOME}/EiNets/data/output/mccle_evaluation
-            dest_path=~/EiNets/data/output/mccle_evaluation
+            eval python test_ccll_evaluation.py --data_i /disk/scratch/${USER}/ccle_einets/data/datasets --model_i /disk/scratch/${USER}/ccle_einets/data/output -K 32 -o /disk/scratch/${USER}/ccle_einets/data/output --pd_deltas 7,28 --dataset ${DATASET} --patch_prob ${PATCH_PROB} --patch_size ${PATCH_DIMS} --fid_inpaint
+            src_path=${SCRATCH_HOME}/ccle_einets/data/output/mccle_evaluation
+            dest_path=~/ccle_einets/data/output/mccle_evaluation
             mkdir -p ${dest_path}
         else
             echo "Invalid argument: $6"
@@ -88,16 +88,16 @@ elif [ ${CLL_TEST} == "n" ]; then
         if [ ${INPAINTING} == "n" ]; then
             echo "Running fid script for MLE model"
             # Again note that need to change depending on whether you want to evaluate EM or SGD baseline.
-            eval python cll_evaluation.py --data_i /disk/scratch/${USER}/EiNets/data/datasets/ --model_i /disk/scratch/${USER}/EiNets/data/output/ -K 32 -o /disk/scratch/${USER}/EiNets/data/output/ --pd_deltas 7,28 --dataset mnist --patch_prob ${PATCH_PROB} --em --fid
-            src_path=${SCRATCH_HOME}/EiNets/data/output
-            dest_path=~/EiNets/data/output
+            eval python test_ccll_evaluation.py --data_i /disk/scratch/${USER}/ccle_einets/data/datasets/ --model_i /disk/scratch/${USER}/ccle_einets/data/output/ -K 32 -o /disk/scratch/${USER}/ccle_einets/data/output/ --pd_deltas 7,28 --dataset mnist --patch_prob ${PATCH_PROB} --em --fid
+            src_path=${SCRATCH_HOME}/ccle_einets/data/output
+            dest_path=~/ccle_einets/data/output
             mkdir -p ${dest_path}
         elif [ ${INPAINTING} == "y" ]; then
             # Run FID inpainting evaluation script.
             echo "Running fid inpainting script for ccle mode"
-            eval python cll_evaluation.py --data_i /disk/scratch/${USER}/EiNets/data/datasets/ --model_i /disk/scratch/${USER}/EiNets/data/output/ -K 32 -o /disk/scratch/${USER}/EiNets/data/output/ --pd_deltas 7,28 --dataset ${DATASET} --patch_prob ${PATCH_PROB} --em --fid_inpaint
-            src_path=${SCRATCH_HOME}/EiNets/data/output/baseline_evaluation
-            dest_path=~/EiNets/data/output/baseline_evaluation
+            eval python test_ccll_evaluation.py --data_i /disk/scratch/${USER}/ccle_einets/data/datasets/ --model_i /disk/scratch/${USER}/ccle_einets/data/output/ -K 32 -o /disk/scratch/${USER}/ccle_einets/data/output/ --pd_deltas 7,28 --dataset ${DATASET} --patch_prob ${PATCH_PROB} --em --fid_inpaint
+            src_path=${SCRATCH_HOME}/ccle_einets/data/output/baseline_evaluation
+            dest_path=~/ccle_einets/data/output/baseline_evaluation
             mkdir -p ${dest_path}
         else
             echo "Invalid argument: $6"

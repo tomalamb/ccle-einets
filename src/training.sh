@@ -23,8 +23,8 @@ echo "Moving input data to the compute node's scratch space: $SCRATCH_DISK"
 SCRATCH_DISK=/disk/scratch/${USER}
 SCRATCH_HOME=${SCRATCH_DISK}
 mkdir -p ${SCRATCH_HOME}
-src_path=~/EiNets/data/datasets
-dest_path=${SCRATCH_HOME}/EiNets/data/datasets
+src_path=~/ccle_einets/data/datasets
+dest_path=${SCRATCH_HOME}/ccle_einets/data/datasets
 mkdir -p ${dest_path}
 rsync --archive --update --compress --progress ${src_path}/ ${dest_path}
 
@@ -32,7 +32,7 @@ rsync --archive --update --compress --progress ${src_path}/ ${dest_path}
 export WANDB_DIR=${SCRATCH_HOME}
 
 # make ouput directory on the scratch disk of the node if required.
-mkdir -p ${SCRATCH_HOME}/EiNets/data/output/mcclle_training
+mkdir -p ${SCRATCH_HOME}/ccle_einets/data/output/cclle_training
 
 # Change command line arguments based on the training we want to carry out.
 DATASET=${3:-mnist}
@@ -40,26 +40,26 @@ patch_prob=${4:-1.0}
 WINDOW_DIMS=${5:-16}
 # NUM_BIN_BISECTIONS=${6:-1}
 # GRID_PROB=${6:-0.889}
-WANDB_PROJ=EiNets_MCCLE_vs_MLE
+WANDB_PROJ=EiNets_CCLE_vs_MLE
 
 # Run EM, MLE or MCCLE training.
 if [ "$2" == "em" ]; then  
     echo "Running EM training on dataset: ${DATASET}"
-    eval python ~/EiNets/src/training.py -i /disk/scratch/${USER}/EiNets/data/datasets -o /disk/scratch/${USER}/EiNets/data/output -K 32 --max_num_epochs 64 --batch_size 100 --wandb_online --wandb_project ${WANDB_PROJ} --dataset ${DATASET} --patience 8 --pd_deltas 7,28 --use_em
-    src_path=${SCRATCH_HOME}/EiNets/data/output/baseline_training
-    dest_path=~/EiNets/data/output/baseline_training
+    eval python ~/ccle_einets/src/training.py -i /disk/scratch/${USER}/ccle_einets/data/datasets -o /disk/scratch/${USER}/ccle_einets/data/output -K 32 --max_num_epochs 64 --batch_size 100 --wandb_online --wandb_project ${WANDB_PROJ} --dataset ${DATASET} --patience 8 --pd_deltas 7,28 --use_em
+    src_path=${SCRATCH_HOME}/ccle_einets/data/output/baseline_training
+    dest_path=~/ccle_einets/data/output/baseline_training
     mkdir -p ${dest_path}
 elif [ "$2" == "mle" ]; then
     echo "Running MLE training on dataset: ${DATASET}"
-    eval python ~/EiNets/src/training.py -i /disk/scratch/${USER}/EiNets/data/datasets -o /disk/scratch/${USER}/EiNets/data/output -K 32 --max_num_epochs 64 --batch_size 100 --wandb_online --wandb_project ${WANDB_PROJ} --lr 0.01 --dataset ${DATASET} --patience 8 --pd_deltas 7,28
-    src_path=${SCRATCH_HOME}/EiNets/data/output/baseline_training
-    dest_path=~/EiNets/data/output/baseline_training
+    eval python ~/ccle_einets/src/training.py -i /disk/scratch/${USER}/ccle_einets/data/datasets -o /disk/scratch/${USER}/ccle_einets/data/output -K 32 --max_num_epochs 64 --batch_size 100 --wandb_online --wandb_project ${WANDB_PROJ} --lr 0.01 --dataset ${DATASET} --patience 8 --pd_deltas 7,28
+    src_path=${SCRATCH_HOME}/ccle_einets/data/output/baseline_training
+    dest_path=~/ccle_einets/data/output/baseline_training
     mkdir -p ${dest_path}
-elif [ "$2" == "mccle" ]; then
+elif [ "$2" == "ccle" ]; then
     echo "Running MCCLE training on dataset: ${DATASET}"
-    eval python ~/EiNets/src/training.py -i /disk/scratch/${USER}/EiNets/data/datasets -o /disk/scratch/${USER}/EiNets/data/output -K 32 --max_num_epochs 64 --batch_size 100 --wandb_online --wandb_project ${WANDB_PROJ} --mccle --lr 0.01 --dataset ${DATASET} --patience 8 --pd_deltas 7,28 --patch_size ${WINDOW_DIMS} --patch_prob ${patch_prob}
-    src_path=${SCRATCH_HOME}/EiNets/data/output/mcclle_training
-    dest_path=~/EiNets/data/output/mcclle_training
+    eval python ~/ccle_einets/src/training.py -i /disk/scratch/${USER}/ccle_einets/data/datasets -o /disk/scratch/${USER}/ccle_einets/data/output -K 32 --max_num_epochs 64 --batch_size 100 --wandb_online --wandb_project ${WANDB_PROJ} --mccle --lr 0.01 --dataset ${DATASET} --patience 8 --pd_deltas 7,28 --patch_size ${WINDOW_DIMS} --patch_prob ${patch_prob}
+    src_path=${SCRATCH_HOME}/ccle_einets/data/output/cclle_training
+    dest_path=~/ccle_einets/data/output/cclle_training
     mkdir -p ${dest_path}
 else
     echo "Invalid argument: $2"

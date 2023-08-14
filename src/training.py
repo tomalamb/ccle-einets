@@ -24,10 +24,10 @@ def parse_args() -> argparse.Namespace:
     """
     parser = argparse.ArgumentParser(
         description='EiNet argument parser.')
-    parser.add_argument('-i', type=str, default='../data/datasets/', metavar='D',
-                        help='directory where the input data is stored (default: ../data/input)')
-    parser.add_argument('-o', type=str, default='../data/output/baselines', metavar='D',
-                        help='directory where the outputs of training are to be stored (default: ../data/output)')
+    parser.add_argument('-i', type=str, default='data/datasets', metavar='D',
+                        help='directory where the input data is stored (default: data/input)')
+    parser.add_argument('-o', type=str, default='data/output', metavar='D',
+                        help='directory where the outputs of training are to be stored (default: data/output)')
     parser.add_argument('-K', type=int, default=10, metavar='D',
                         help='number of vectorised distributions in sum nodes and leaf inputs (default: 10)')
     parser.add_argument('--max_num_epochs', type=int, default=64, metavar='D',
@@ -62,9 +62,7 @@ def parse_args() -> argparse.Namespace:
                         help='Whether to use wandb for logging. If not provided, the default is False.')
     parser.add_argument('--wandb_project', type=str, default='EiNets', metavar='D',
                         help='Wandb project name (default: EiNets).')
-    parser.add_argument('--split_patching', action='store_true',
-                        help='Whether to use split patching or not. If not provided, the default is False (i.e. no patching).')
-    parser.add_argument('--grid_patch', action='store_true',
+    parser.add_argument('--grid_sampling', action='store_true',
                         help='Whether to use grid patching or not. If not provided, the default is False')
     parser.add_argument('--grid_prob', type=float, default=0.1, metavar='D',
                         help='Probability of choosing patch within grid region. (default: 1.0)')
@@ -105,8 +103,7 @@ def main(args: argparse.Namespace) -> None:
     use_em = args.use_em
     wandb_project = args.wandb_project
     wandb_online = args.wandb_online
-    split_patching = args.split_patching
-    grid_patch = args.grid_patch
+    grid_sampling = args.grid_sampling
     grid_prob = args.grid_prob
     bisection_sampling = args.bisection_sampling
     num_bin_bisections = args.num_bin_bisections
@@ -172,32 +169,20 @@ def main(args: argparse.Namespace) -> None:
         raise ValueError('Dataset not recognised.')
 
     # Depending on the type of training, setup wandb logging and output directory.
-    if split_patching:
-        print('Split patching')
-        identifier = identifier + f'_split_patching_{split_patching}'
-        patch_dims["width"] = math.floor(
-            patch_dims["width"]/2)
-        patch_dims["height"] = math.floor(
-            patch_dims["height"]/2)
-        print("Now have window dimensions:",
-              patch_dims["width"], patch_dims["height"])
-        wandb_project = wandb_project + '_split_patching'
-        output_dir = output_dir + \
-            f'/ccle_training/{dataset_name}/patch_size_{str(patch_dims["width"])}_{str(patch_dims["height"])}/patch_prob_{str(patch_prob)}/split_patching/'
-    elif grid_patch:
+    if grid_sampling:
         print(
-            f"Using grid patching with grid patch size: {grid_patch} with grid patch probability: {grid_prob}")
-        identifier = identifier + f'_grid_patch_{grid_patch}/prob_{grid_prob}'
-        wandb_project = wandb_project + '_grid_patch'
+            f"Using grid patching with grid patch size: {grid_sampling} with grid patch probability: {grid_prob}")
+        identifier = identifier + f'_grid_sampling_{grid_sampling}/prob_{grid_prob}'
+        wandb_project = wandb_project + '_grid_sampling'
         output_dir = output_dir + \
-            f'/patch_size_{str(patch_dims["width"])}_{str(patch_dims["height"])}/patch_prob_{str(patch_prob)}/grid_patch/grid_prob_{grid_prob}/'
+            f'/ccle_training/{dataset_name}/patch_size_{str(patch_dims["width"])}_{str(patch_dims["height"])}/patch_prob_{str(patch_prob)}/grid_sampling/grid_prob_{grid_prob}/'
     elif bisection_sampling:
         print(
             f"Using bisection_sampling sampling with {num_bin_bisections} binary bisection cuts")
         identifier = identifier + f'_bisection_sampling_{num_bin_bisections}'
         wandb_project = wandb_project + '_bisection_sampling'
         output_dir = output_dir + \
-            f'/bisection_sampling_full/num_bin_bisections_{num_bin_bisections}/'
+            f'/ccle_training/{dataset_name}/bisection_sampling/num_bin_bisections_{num_bin_bisections}/'
     else:
         print("Using uniform random patching")
         output_dir = output_dir + \
@@ -206,6 +191,8 @@ def main(args: argparse.Namespace) -> None:
     # Keep track of lls for each epoch of each run.
     run_lls = []
     results = []
+
+    print(output_dir)
 
     print("Starting training...")
     # Loop over runs for significance testing if required.
@@ -319,7 +306,7 @@ def main(args: argparse.Namespace) -> None:
                             patch_dims["width"],
                             patch_dims["height"],
                             patch_prob,
-                            grid_sampling=grid_patch,
+                            grid_sampling=grid_sampling,
                             grid_prob=grid_prob,
                             bisection_sampling=bisection_sampling,
                             num_bin_bisections=num_bin_bisections)
