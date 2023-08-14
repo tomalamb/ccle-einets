@@ -14,13 +14,15 @@ The following is a link to their original repository: [Einsum Networks](https://
 
 ### Training EiNets via CCLE
 
-#### Preparing the Datasets
+#### Getting Started
 
-First, run the following command to download the MNIST and F-MNIST datasets needed for training:
+In order to get started, intall the required dependencies using the command
 
 ```
-python src/datasets.py 
+bash setup.sh
 ```
+
+This should create a conda environment named einet_ccle, install the required python dependencies and then download the MNIST and F-MNIST datasets.
 
 #### Training an EiNet Model
 To train an EiNet model via CCLE or MLE, execute the following command 
@@ -56,7 +58,7 @@ Below we give three examples of how to train EiNets using SGD for MLE, and then 
     
 
 #### Test Evaluation
-We take as an example, the uniform random sample model, trained using the above command. We now list three command so that you can evaluate the test CCLL, $\text{FID}$ and $\text{FID}_{inp}$ scores for this model.
+We take as an example, the uniform random sample model, trained using the above command. We now list three commands so that you can evaluate the test CCLL, $\text{FID}$ and $\text{FID}_{inp}$ scores for this model.
 
    a. Test CCL scores:
 
