@@ -29,7 +29,7 @@ python src/test_ccll_evaluation.py --command_line_arguments
 ```
 adding the the command line arguments as you need for training. 
 
-Below we give three examples of how to train EiNets using SGD for MLE, and then uniform random smapling, bisection sampling and grid sampling respectively for CLLE training. The examples we include are models that we specifically investigated in this work.
+Below we give three examples of how to train EiNets using SGD for MLE, and then using uniform random smapling, bisection sampling and grid sampling for CLLE training. The examples we include are models that we specifically investigated in this work.
 ```
 # MLE trained model using SGD
 python src/training.py -K 32 --max_num_epochs 64 --batch_size 100 --sgd --lr 0.01 --dataset f_mnist --patience 8 --pd_deltas 7,28  
@@ -45,5 +45,19 @@ python src/training.py -K 32 --max_num_epochs 64 --batch_size 100 --ccle --lr 0.
 ```
 #GRID_{4, \gamma = 0.8889} model
 python src/training.py -K 32 --max_num_epochs 64 --batch_size 100 --ccle --lr 0.01 --dataset f_mnist --patience 8 --pd_deltas 7,28 --patch_size 8 --grid_sampling --grid_prob 0.8889  #GRID_{4, \gamma = 0.8889} model
+```
+
+#### Test Evaluation
+We take as an example, the $RAND_4$ model whcih you can train using the above command. We now list three command so that you can evaluate the test CCLL, $\text{FID}$ and $\text{FID}_{\text{inp}}$ scores for this model.
+```
+python src/test_ccll_evaluation.py -K 32 --pd_deltas 7,28 --patch_size 4  --dataset f_mnist  --ccll_test 
+```
+
+```
+python src/test_ccll_evaluation.py -K 32 --pd_deltas 7,28 --patch_size 4  --dataset f_mnist  --fid 
+```
+
+```
+python src/test_ccll_evaluation.py -K 32 --pd_deltas 7,28 --patch_size 4  --dataset f_mnist  --fid_inpaint 
 ```
 
