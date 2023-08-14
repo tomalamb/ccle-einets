@@ -36,7 +36,7 @@ python src/training.py -K 32 --max_num_epochs 64 --batch_size 100 --sgd --lr 0.0
 python src/training.py -K 32 --max_num_epochs 64 --batch_size 100 --ccle --lr 0.01 --dataset f_mnist --patience 8 --pd_deltas 7,28 --patch_size 8  # RAND_4 model
 ```
 python src/training.py -K 32 --max_num_epochs 64 --batch_size 100 --ccle --lr 0.01 --dataset f_mnist --patience 8 --pd_deltas 7,28 --patch_size 8  --bisection_sampling --num_bin_bisections 5  #BIS_{32} model
-```s
+```
 python src/training.py -K 32 --max_num_epochs 64 --batch_size 100 --ccle --lr 0.01 --dataset f_mnist --patience 8 --pd_deltas 7,28 --patch_size 8 --grid_sampling --grid_prob 0.8889  #GRID_{4, \gamma = 0.8889} model
 ```
 
