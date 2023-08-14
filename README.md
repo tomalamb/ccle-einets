@@ -59,14 +59,18 @@ Below we give three examples of how to train EiNets using SGD for MLE, and then 
 We take as an example, the $\text{RAND}_4$ model whcih you can train using the above command. We now list three command so that you can evaluate the test CCLL, $\text{FID}$ and $\text{FID}_{\text{inp}}$ scores for this model.
     a. Test CCL scores.
 
+
     python src/test_ccll_evaluation.py -K 32 --pd_deltas 7,28 --patch_size 4  --dataset f_mnist  --ccll_test 
     
 
     b. FID scores.
 
+
     python src/test_ccll_evaluation.py -K 32 --pd_deltas 7,28 --patch_size 4  --dataset f_mnist  --fid 
 
+
     c. Inpainted FID scores.
+
 
     python src/test_ccll_evaluation.py -K 32 --pd_deltas 7,28 --patch_size 4  --dataset f_mnist  --fid_inpaint 
     
