@@ -56,7 +56,7 @@ elif [ "$2" == "sgd" ]; then
     mkdir -p ${dest_path}
 elif [ "$2" == "ccle" ]; then
     echo "Running MCCLE training on dataset: ${DATASET}"
-    eval python ~/ccle-einets/src/training.py -i /disk/scratch/${USER}/ccle-einets/data/datasets -o /disk/scratch/${USER}/ccle-einets/data/output -K 32 --max_num_epochs 1 --batch_size 100 --wandb_online --wandb_project ${WANDB_PROJ} --ccle --lr 0.01 --dataset ${DATASET} --patience 8 --pd_deltas 7,28 --patch_size ${WINDOW_DIMS}
+    eval python ~/ccle-einets/src/training.py -i /disk/scratch/${USER}/ccle-einets/data/datasets -o /disk/scratch/${USER}/ccle-einets/data/output -K 32 --max_num_epochs 1 --batch_size 100 --wandb_online --wandb_project ${WANDB_PROJ} --ccle --lr 0.01 --dataset ${DATASET} --patience 8 --pd_deltas 7,28 --patch_size ${WINDOW_DIMS} --bisection_sampling --num_bin_bisections 5
     src_path=${SCRATCH_HOME}/ccle-einets/data/output/cclle_training
     dest_path=~/ccle-einets/data/output/cclle_training
     mkdir -p ${dest_path}
