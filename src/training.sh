@@ -44,19 +44,19 @@ WANDB_PROJ=EiNets_CCLE_vs_MLE
 # Run EM, MLE or MCCLE training.
 if [ "$2" == "em" ]; then  
     echo "Running EM training on dataset: ${DATASET}"
-    eval python ~/ccle-einets/src/training.py -i /disk/scratch/${USER}/ccle-einets/data/datasets -o /disk/scratch/${USER}/ccle-einets/data/output -K 32 --max_num_epochs 64 --batch_size 100 --wandb_online --wandb_project ${WANDB_PROJ} --dataset ${DATASET} --patience 8 --pd_deltas 7,28 --use_em
+    eval python ~/ccle-einets/src/training.py -i /disk/scratch/${USER}/ccle-einets/data/datasets -o /disk/scratch/${USER}/ccle-einets/data/output -K 32 --max_num_epochs 1 --batch_size 100 --wandb_online --wandb_project ${WANDB_PROJ} --dataset ${DATASET} --patience 8 --pd_deltas 7,28 --em
     src_path=${SCRATCH_HOME}/ccle-einets/data/output/baseline_training
     dest_path=~/ccle-einets/data/output/baseline_training
     mkdir -p ${dest_path}
-elif [ "$2" == "mle" ]; then
+elif [ "$2" == "sgd" ]; then
     echo "Running MLE training on dataset: ${DATASET}"
-    eval python ~/ccle-einets/src/training.py -i /disk/scratch/${USER}/ccle-einets/data/datasets -o /disk/scratch/${USER}/ccle-einets/data/output -K 32 --max_num_epochs 64 --batch_size 100 --wandb_online --wandb_project ${WANDB_PROJ} --lr 0.01 --dataset ${DATASET} --patience 8 --pd_deltas 7,28
+    eval python ~/ccle-einets/src/training.py -i /disk/scratch/${USER}/ccle-einets/data/datasets -o /disk/scratch/${USER}/ccle-einets/data/output -K 32 --max_num_epochs 1 --batch_size 100 --wandb_online --wandb_project ${WANDB_PROJ} --lr 0.01 --dataset ${DATASET} --patience 8 --pd_deltas 7,28
     src_path=${SCRATCH_HOME}/ccle-einets/data/output/baseline_training
     dest_path=~/ccle-einets/data/output/baseline_training
     mkdir -p ${dest_path}
 elif [ "$2" == "ccle" ]; then
     echo "Running MCCLE training on dataset: ${DATASET}"
-    eval python ~/ccle-einets/src/training.py -i /disk/scratch/${USER}/ccle-einets/data/datasets -o /disk/scratch/${USER}/ccle-einets/data/output -K 32 --max_num_epochs 64 --batch_size 100 --wandb_online --wandb_project ${WANDB_PROJ} --mccle --lr 0.01 --dataset ${DATASET} --patience 8 --pd_deltas 7,28 --patch_size ${WINDOW_DIMS} --patch_prob ${patch_prob}
+    eval python ~/ccle-einets/src/training.py -i /disk/scratch/${USER}/ccle-einets/data/datasets -o /disk/scratch/${USER}/ccle-einets/data/output -K 32 --max_num_epochs 1 --batch_size 100 --wandb_online --wandb_project ${WANDB_PROJ} --mccle --lr 0.01 --dataset ${DATASET} --patience 8 --pd_deltas 7,28 --patch_size ${WINDOW_DIMS} --patch_prob ${patch_prob}
     src_path=${SCRATCH_HOME}/ccle-einets/data/output/cclle_training
     dest_path=~/ccle-einets/data/output/cclle_training
     mkdir -p ${dest_path}
