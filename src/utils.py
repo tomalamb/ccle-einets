@@ -214,7 +214,7 @@ def overfitting_plot():
               r'$\text{GRID}_{4, \gamma = 0.0256}$', r'$\text{GRID}_{4, \gamma = 0.1024}$', r'$\text{GRID}_{4, \gamma = 0.6272}$', 
               r'$\text{GRID}_{8, \gamma = 0.1451}$', r'$\text{GRID}_{8, \gamma = 0.8889}$']
 
-    fig, axs = plt.subplots(1, 2, figsize=(15, 12), dpi=300)
+    fig, axs = plt.subplots(1, 2, figsize=(15, 10), dpi=300)
 
     for ax, dataset in zip(axs, datasets):
         # Plot degree of overfitting on the horizontal axis.
@@ -241,10 +241,10 @@ def overfitting_plot():
     axs[1].set_ylim([3.32, 3.6])
 
     # Add axis titles and figure title based on description form our work.
-    fig.text(0.5, 0.06, 'Degree of Overfitting, ' +  # Adjust the second parameter
+    fig.text(0.5, 0.055, 'Degree of Overfitting, ' +  # Adjust the second parameter
              r'$\mathcal{O}(\boldsymbol{\theta}_M)$', ha='center', fontsize=22, fontweight='bold')
 
-    fig.text(0.068, 0.5, r'$-\ell_{LL} \left(\boldsymbol{\theta}_M ; \mathcal{D}_{\text{test}} \right)$',
+    fig.text(0.06, 0.5, r'$-\ell_{LL} \left(\boldsymbol{\theta}_M ; \mathcal{D}_{\text{test}} \right)$',
              va='center', rotation='vertical', fontsize=22, fontweight='bold')
 
     fig.suptitle(
