@@ -56,7 +56,7 @@ def parse_args() -> argparse.Namespace:
                         help='Window width and height (in this order) for sampled marginal during ccle training.')
     parser.add_argument('--ccle', action='store_true',
                         help='Whether to use ccle training or not. If not provided, the default is False.')
-    parser.add_argument('--use_em', action='store_true',
+    parser.add_argument('--em', action='store_true',
                         help='Determines whether to trainn baseline using SGD or s-EM. If not provided, the default is False.')
     parser.add_argument('--wandb_online', action='store_true',
                         help='Whether to use wandb for logging. If not provided, the default is False.')
@@ -100,7 +100,7 @@ def main(args: argparse.Namespace) -> None:
     lr = args.lr
     patch_prob = args.patch_prob
     ccle = args.ccle
-    use_em = args.use_em
+    em = args.em
     wandb_project = args.wandb_project
     wandb_online = args.wandb_online
     grid_sampling = args.grid_sampling
@@ -110,7 +110,7 @@ def main(args: argparse.Namespace) -> None:
     eval_freq = args.eval_freq
 
     # Check not using EM and ccle together.
-    if use_em and ccle:
+    if em and ccle:
         raise ValueError(
             'Cannot use em and ccle together. Choose one or the other.')
 
@@ -136,10 +136,10 @@ def main(args: argparse.Namespace) -> None:
         identifier = f'k={k}_mcle={ccle}_dataset={dataset_name}_optimiser={optimiser_chosen}_lr={lr}_patch_prob={patch_prob}_patch_size={patch_dims["width"]},{patch_dims["height"]}'
     else:
         # If not using ccle, generate identifier for run based on whether using SGD or EM.
-        if use_em:
-            identifier = f'k={k}_ccle={ccle}_dataset={dataset_name}_em_stepsize_{online_em_stepsize}_use_em={use_em}'
+        if em:
+            identifier = f'k={k}_ccle={ccle}_dataset={dataset_name}_em_stepsize_{online_em_stepsize}_em={em}'
         else:
-            identifier = f'k={k}_ccle={ccle}_dataset={dataset_name}_optimiser={optimiser_chosen}_lr={lr}_use_em={use_em}'
+            identifier = f'k={k}_ccle={ccle}_dataset={dataset_name}_optimiser={optimiser_chosen}_lr={lr}_em={em}'
 
     print("Loading data...")
     # Set up dataset and associated parameters.
@@ -150,7 +150,7 @@ def main(args: argparse.Namespace) -> None:
         valid_size = 10000
         input_dir = input_dir + '/mnist/'
         if not ccle:
-            if use_em:
+            if em:
                 output_dir = output_dir + f'/baseline_training/mnist/use/'
             else:
                 output_dir = output_dir + f'/baseline_training/mnist/sgd/'
@@ -161,7 +161,7 @@ def main(args: argparse.Namespace) -> None:
         valid_size = 10000
         input_dir = input_dir + '/f_mnist/'
         if not ccle:
-            if use_em:
+            if em:
                 output_dir = output_dir + f'/baseline_training/f_mnist/em/'
             else:
                 output_dir = output_dir + f'/baseline_training/f_mnist/sgd/'
@@ -265,7 +265,7 @@ def main(args: argparse.Namespace) -> None:
                 num_dims=1,
                 num_classes=1,
                 num_sums=k,
-                use_em=use_em,
+                use_em=em,
                 num_input_distributions=k,
                 exponential_family=EinsumNetwork.CategoricalArray,
                 exponential_family_args={'K': 256},
@@ -284,7 +284,7 @@ def main(args: argparse.Namespace) -> None:
         print(f"Number of trainable parameters: {num_parameters}")
 
         # If not using EM, setup optimiser for training.
-        if not use_em:
+        if not em:
             optimiser = torch.optim.Adam(einet.parameters(), lr=lr)
 
         # Train model using early stopping based on avg validation nll (bpd).
@@ -293,7 +293,7 @@ def main(args: argparse.Namespace) -> None:
         best_epoch_test_nll_bpd = float('inf')
         best_valid_epoch = 0
 
-        if not use_em:
+        if not em:
             # ccle training loop.
             if ccle:
                 for epoch in range(max_num_epochs):
