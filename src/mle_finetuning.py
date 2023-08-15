@@ -1,3 +1,9 @@
+"""
+Training script for MLE fine-tuning of CCLE-trained EiNets models for density estimation. Code
+builds upon the code from the original EiNets repository, which can be found
+at https://github.com/cambridge-mlg/EinsumNetworks.
+"""
+
 import torch
 from EinsumNetwork import Graph, EinsumNetwork
 import argparse
