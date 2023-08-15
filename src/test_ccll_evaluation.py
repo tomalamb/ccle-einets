@@ -106,9 +106,9 @@ def ccll_evaluation(args) -> None:
         print(
             f'Evaluating test CCLL of grid patching model with grid prob {grid_prob} and patch size {str(patch_window_dims["width"])}, {str(patch_window_dims["height"])}')
         model_input_dir = model_input_dir + \
-            f'/ccle_training/{dataset_name}/patch_size_{str(patch_window_dims["width"])}_{str(patch_window_dims["height"])}/patch_prob_{patch_prob}/grid_patch/grid_prob_{grid_prob}/models/'
+            f'/ccle_training/{dataset_name}/patch_size_{str(patch_window_dims["width"])}_{str(patch_window_dims["height"])}/patch_prob_{patch_prob}/grid_sampling/grid_prob_{grid_prob}/models/'
         output_dir = output_dir + \
-            f'/ccle_evaluation/{dataset_name}/patch_size_{str(patch_window_dims["width"])}_{str(patch_window_dims["height"])}/patch_prob_{patch_prob}/grid_patch/grid_prob_{grid_prob}/'
+            f'/ccle_evaluation/{dataset_name}/patch_size_{str(patch_window_dims["width"])}_{str(patch_window_dims["height"])}/patch_prob_{patch_prob}/grid_sampling/grid_prob_{grid_prob}/'
     elif bisection_sampling:
         # Bisection sampling.
         print(
@@ -277,9 +277,9 @@ def fid_evaluation(args):
         print(
             f'Evaluating FID scores of grid patching model with grid prob {grid_prob} and patch size {str(patch_window_dims["width"])}, {str(patch_window_dims["height"])}')
         model_input_dir = model_input_dir + \
-            f'/ccle_training/{dataset_name}/patch_size_{str(patch_window_dims["width"])}_{str(patch_window_dims["height"])}/patch_prob_{patch_prob}/grid_patch/grid_prob_{grid_prob}/models/'
+            f'/ccle_training/{dataset_name}/patch_size_{str(patch_window_dims["width"])}_{str(patch_window_dims["height"])}/patch_prob_{patch_prob}/grid_sampling/grid_prob_{grid_prob}/models/'
         output_dir = output_dir + \
-            f'/ccle_evaluation/{dataset_name}/patch_size_{str(patch_window_dims["width"])}_{str(patch_window_dims["height"])}/patch_prob_{patch_prob}/grid_patch/grid_prob_{grid_prob}/'
+            f'/ccle_evaluation/{dataset_name}/patch_size_{str(patch_window_dims["width"])}_{str(patch_window_dims["height"])}/patch_prob_{patch_prob}/grid_sampling/grid_prob_{grid_prob}/'
     elif bisection_sampling:
         # Bisection sampling.
         print(
@@ -450,9 +450,9 @@ def fid_inpainting_evaluation(args):
         print(
             f'Evaluating inpainted FID scores of grid patching model with grid prob {grid_prob} and patch size {str(patch_window_dims["width"])}, {str(patch_window_dims["height"])}')
         model_input_dir = model_input_dir + \
-            f'/ccle_training/{dataset_name}/patch_size_{str(patch_window_dims["width"])}_{str(patch_window_dims["height"])}/patch_prob_{patch_prob}/grid_patch/grid_prob_{grid_prob}/models/'
+            f'/ccle_training/{dataset_name}/patch_size_{str(patch_window_dims["width"])}_{str(patch_window_dims["height"])}/patch_prob_{patch_prob}/grid_sampling/grid_prob_{grid_prob}/models/'
         output_dir = output_dir + \
-            f'/ccle_evaluation/{dataset_name}/patch_size_{str(patch_window_dims["width"])}_{str(patch_window_dims["height"])}/patch_prob_{patch_prob}/grid_patch/grid_prob_{grid_prob}/'
+            f'/ccle_evaluation/{dataset_name}/patch_size_{str(patch_window_dims["width"])}_{str(patch_window_dims["height"])}/patch_prob_{patch_prob}/grid_sampling/grid_prob_{grid_prob}/'
     elif bisection_sampling:
         # Bisection sampling.
         print(
