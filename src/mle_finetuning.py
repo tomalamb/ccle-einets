@@ -138,7 +138,7 @@ def main(args: argparse.Namespace) -> None:
         output_dir = output_dir + \
             f'/mle_finetuning/{dataset_name}/patch_size_{str(patch_window_dims["width"])}_{str(patch_window_dims["height"])}/patch_prob_{patch_prob}/grid_patch/grid_prob_{grid_prob}/'
         identifier = identifier + \
-            f'_grid_sampling_{grid_sampling}_prob_{grid_prob}'
+            f'_grid_sampling_{grid_sampling}_grid_prob_{grid_prob}'
     elif bisection_sampling:
         # Bisection sampling.
         print(

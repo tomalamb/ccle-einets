@@ -164,7 +164,7 @@ def main(args: argparse.Namespace) -> None:
             print(
                 f"Using grid patching with grid patch size: {grid_sampling} with grid patch probability: {grid_prob}")
             identifier = identifier + \
-                f'_grid_sampling_{grid_sampling}/prob_{grid_prob}'
+                f'_grid_sampling_{grid_sampling}_grid_prob_{grid_prob}'
             wandb_project = wandb_project + '_grid_sampling'
             output_dir = output_dir + \
                 f'/ccle_training/{dataset_name}/patch_size_{str(patch_dims["width"])}_{str(patch_dims["height"])}/patch_prob_{str(patch_prob)}/grid_sampling/grid_prob_{grid_prob}/'
