@@ -14,7 +14,7 @@ export CUDA_VISIBLE_DEVICES=$1
 
 # Setup conda environment.
 echo "Setting up bash enviroment"
-CONDA_ENV_NAME=einet-cle
+CONDA_ENV_NAME=einet-ccle
 echo "Activating conda environment: ${CONDA_ENV_NAME}"
 conda activate ${CONDA_ENV_NAME}
 
