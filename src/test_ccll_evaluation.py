@@ -292,8 +292,8 @@ def fid_evaluation(args):
         # SGD MLE baseline evaluation.
         print(f"Evaluating FID scores of SGD MLE baseline model.")
         model_input_dir = model_input_dir + \
-            f'baseline_training/{dataset_name}/sgd/models/'
-        output_dir = output_dir + f'baseline_evaluation/{dataset_name}/sgd/'
+            f'/baseline_training/{dataset_name}/sgd/models/'
+        output_dir = output_dir + f'/baseline_evaluation/{dataset_name}/sgd/'
     elif em:
         # EM baseline evaluation.
         print(f"Evaluating FID scores of EM baseline model.")
