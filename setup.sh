@@ -14,5 +14,4 @@ fi
 conda activate ${CONDA_ENV_NAME}
 
 # Download datasets for training to the DFS.
-cd src
-python datasets.py
+python src/datasets.py

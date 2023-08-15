@@ -133,7 +133,7 @@ def main(args: argparse.Namespace) -> None:
             "width": patch_size[0], "height": patch_size[1]}
 
         # Create unique identifier thats the same for each run with the same hyperparameters.
-        identifier = f'k={k}_mcle={ccle}_dataset={dataset_name}_optimiser={optimiser_chosen}_lr={lr}_patch_prob={patch_prob}_patch_size={patch_dims["width"]},{patch_dims["height"]}'
+        identifier = f'k={k}_mcle={ccle}_dataset={dataset_name}_optimiser={optimiser_chosen}_lr={lr}'
     else:
         # If not using ccle, generate identifier for run based on whether using SGD or EM.
         if em:
@@ -183,9 +183,11 @@ def main(args: argparse.Namespace) -> None:
                 f'_patch_prob_{str(patch_prob)}_patch_size_{str(patch_dims["width"])}_{str(patch_dims["height"])}'
     else:
         if em:
+            print("Using EM or MLE training")
             output_dir = output_dir + \
                 f'/baseline_training/{dataset_name}/em/'
         else:
+            print("Using SGD training")
             output_dir = output_dir + \
                 f'/baseline_training/{dataset_name}/sgd/'
 
