@@ -36,10 +36,9 @@ mkdir -p ${SCRATCH_HOME}/ccle-einets/data/output/cclle_training
 
 # Change command line arguments based on the training we want to carry out.
 DATASET=${3:-mnist}
-patch_prob=${4:-1.0}
-WINDOW_DIMS=${5:-16}
-# NUM_BIN_BISECTIONS=${6:-1}
-# GRID_PROB=${6:-0.889}
+WINDOW_DIMS=${4:-16}
+# NUM_BIN_BISECTIONS=${5:-1}
+# GRID_PROB=${5:-0.889}
 WANDB_PROJ=EiNets_CCLE_vs_MLE
 
 # Run EM, MLE or MCCLE training.
