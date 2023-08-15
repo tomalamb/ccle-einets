@@ -55,7 +55,7 @@ if [ ${CCLL_TEST} == "y" ]; then
     elif [ ${CCLE} == "n" ]; then
         # Note that need to change depending on whether you want to evaluate EM or SGD baseline.
         echo "Running test ccll for MLE model"
-        eval python test_ccll_evaluation.py --data_i /disk/scratch/${USER}/ccle-einets/data/datasets --model_i /disk/scratch/${USER}/ccle-einets/data/output -K 32 -o /disk/scratch/${USER}/ccle-einets/data/output --pd_deltas 7,28 --dataset ${DATASET} --em --ccll_test
+        eval python test_ccll_evaluation.py --data_i /disk/scratch/${USER}/ccle-einets/data/datasets --model_i /disk/scratch/${USER}/ccle-einets/data/output -K 32 -o /disk/scratch/${USER}/ccle-einets/data/output --pd_deltas 7,28 --dataset ${DATASET} --sgd --ccll_test
         src_path=${SCRATCH_HOME}/ccle-einets/data/output/baseline_evaluation
         dest_path=~/ccle-einets/data/output/baseline_evaluation
         mkdir -p ${dest_path}
@@ -87,14 +87,14 @@ elif [ ${CCLL_TEST} == "n" ]; then
         if [ ${INPAINTING} == "n" ]; then
             echo "Running fid script for MLE model"
             # Again note that need to change depending on whether you want to evaluate EM or SGD baseline.
-            eval python test_ccll_evaluation.py --data_i /disk/scratch/${USER}/ccle-einets/data/datasets/ --model_i /disk/scratch/${USER}/ccle-einets/data/output -K 32 -o /disk/scratch/${USER}/ccle-einets/data/output --pd_deltas 7,28 --dataset ${DATASET} --em --fid
+            eval python test_ccll_evaluation.py --data_i /disk/scratch/${USER}/ccle-einets/data/datasets/ --model_i /disk/scratch/${USER}/ccle-einets/data/output -K 32 -o /disk/scratch/${USER}/ccle-einets/data/output --pd_deltas 7,28 --dataset ${DATASET} --sgd --fid
             src_path=${SCRATCH_HOME}/ccle-einets/data/output
             dest_path=~/ccle-einets/data/output
             mkdir -p ${dest_path}
         elif [ ${INPAINTING} == "y" ]; then
             # Run FID inpainting evaluation script.
             echo "Running fid inpainting script for ccle mode"
-            eval python test_ccll_evaluation.py --data_i /disk/scratch/${USER}/ccle-einets/data/datasets/ --model_i /disk/scratch/${USER}/ccle-einets/data/output -K 32 -o /disk/scratch/${USER}/ccle-einets/data/output --pd_deltas 7,28 --dataset ${DATASET} --em --fid_inpaint
+            eval python test_ccll_evaluation.py --data_i /disk/scratch/${USER}/ccle-einets/data/datasets/ --model_i /disk/scratch/${USER}/ccle-einets/data/output -K 32 -o /disk/scratch/${USER}/ccle-einets/data/output --pd_deltas 7,28 --dataset ${DATASET} --sgd --fid_inpaint
             src_path=${SCRATCH_HOME}/ccle-einets/data/output/baseline_evaluation
             dest_path=~/ccle-einets/data/output/baseline_evaluation
             mkdir -p ${dest_path}
