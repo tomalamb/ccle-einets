@@ -1,4 +1,4 @@
-name: einet_ccle
+name: einet-ccle
 channels:
   - pytorch
   - nvidia
