@@ -121,13 +121,13 @@ def ccll_evaluation(args) -> None:
         # SGD MLE baseline evaluation.
         print(f"Evaluating test CCLL of SGD MLE baseline model.")
         model_input_dir = model_input_dir + \
-            f'baselines/{dataset_name}/sgd/models/'
+            f'/baselines/{dataset_name}/sgd/models/'
         output_dir = output_dir + f'baseline_evaluation/{dataset_name}/sgd/'
     elif em:
         # EM baseline evaluation.
         print(f"Evaluating test CCLL of EM baseline model.")
         model_input_dir = model_input_dir + \
-            f'baselines/{dataset_name}/em/models/'
+            f'/baselines/{dataset_name}/em/models/'
         output_dir = output_dir + f'baseline_evaluation/{dataset_name}/em/'
     else:
         # Uniform random sampling evaluation.
@@ -298,8 +298,8 @@ def fid_evaluation(args):
         # EM baseline evaluation.
         print(f"Evaluating FID scores of EM baseline model.")
         model_input_dir = model_input_dir + \
-            f'baselines/{dataset_name}/em/models/'
-        output_dir = output_dir + f'baseline_evaluation/{dataset_name}/em/'
+            f'/baselines/{dataset_name}/em/models/'
+        output_dir = output_dir + f'/baseline_evaluation/{dataset_name}/em/'
     else:
         # Uniform random sampling evaluation.
         print(
@@ -471,8 +471,8 @@ def fid_inpainting_evaluation(args):
         # EM baseline evaluation.
         print(f"Evaluating inpainted FID scores of EM baseline model.")
         model_input_dir = model_input_dir + \
-            f'baselines/{dataset_name}/em/models/'
-        output_dir = output_dir + f'baseline_evaluation/{dataset_name}/em/'
+            f'/baselines/{dataset_name}/em/models/'
+        output_dir = output_dir + f'/baseline_evaluation/{dataset_name}/em/'
     else:
         # Uniform random sampling evaluation.
         print(
