@@ -48,7 +48,7 @@ if [ ${CCLL_TEST} == "y" ]; then
     # Run ccll test evaluation script.
     if [ ${CCLE} == "y" ]; then 
         echo "Running test ccll for cclle model"
-        eval python test_ccll_evaluation.py --data_i /disk/scratch/${USER}/ccle-einets/data/datasets --model_i /disk/scratch/${USER}/ccle-einets/data/output -K 32 -o /disk/scratch/${USER}/ccle-einets/data/output --pd_deltas 7,28 --dataset ${DATASET} --patch_size ${PATCH_DIMS} --ccll_test --bisection_sampling --num_bin_bisections 5
+        eval python test_ccll_evaluation.py --data_i /disk/scratch/${USER}/ccle-einets/data/datasets --model_i /disk/scratch/${USER}/ccle-einets/data/output -K 32 -o /disk/scratch/${USER}/ccle-einets/data/output --pd_deltas 7,28 --dataset ${DATASET} --patch_size ${PATCH_DIMS} --ccll_test --grid_sampling --grid_prob 0.8
         src_path=${SCRATCH_HOME}/ccle-einets/data/output/mccle_evaluation
         dest_path=~/ccle-einets/data/output/mccle_evaluation
         mkdir -p ${dest_path}
@@ -68,14 +68,14 @@ elif [ ${CCLL_TEST} == "n" ]; then
         if [ ${INPAINTING} == "n" ]; then
             # Run FID evaluation script.
             echo "Running fid script for ccle model"
-            eval python test_ccll_evaluation.py --data_i /disk/scratch/${USER}/ccle-einets/data/datasets --model_i /disk/scratch/${USER}/ccle-einets/data/output -K 32 -o /disk/scratch/${USER}/ccle-einets/data/output --pd_deltas 7,28 --dataset ${DATASET} --patch_size ${PATCH_DIMS} --fid --bisection_sampling --num_bin_bisections 5
+            eval python test_ccll_evaluation.py --data_i /disk/scratch/${USER}/ccle-einets/data/datasets --model_i /disk/scratch/${USER}/ccle-einets/data/output -K 32 -o /disk/scratch/${USER}/ccle-einets/data/output --pd_deltas 7,28 --dataset ${DATASET} --patch_size ${PATCH_DIMS} --fid --grid_sampling --grid_prob 0.8
             src_path=${SCRATCH_HOME}/ccle-einets/data/output/mccle_evaluation
             dest_path=~/ccle-einets/data/output/mccle_evaluation/
             mkdir -p ${dest_path}
         elif [ ${INPAINTING} == "y" ]; then
             # Run FID inpainting evaluation script.
             echo "Running fid inpainting script for ccle mode"
-            eval python test_ccll_evaluation.py --data_i /disk/scratch/${USER}/ccle-einets/data/datasets --model_i /disk/scratch/${USER}/ccle-einets/data/output -K 32 -o /disk/scratch/${USER}/ccle-einets/data/output --pd_deltas 7,28 --dataset ${DATASET} --patch_size ${PATCH_DIMS} --fid_inpaint --bisection_sampling --num_bin_bisections 5
+            eval python test_ccll_evaluation.py --data_i /disk/scratch/${USER}/ccle-einets/data/datasets --model_i /disk/scratch/${USER}/ccle-einets/data/output -K 32 -o /disk/scratch/${USER}/ccle-einets/data/output --pd_deltas 7,28 --dataset ${DATASET} --patch_size ${PATCH_DIMS} --fid_inpaint --grid_sampling --grid_prob 0.8
             src_path=${SCRATCH_HOME}/ccle-einets/data/output/mccle_evaluation
             dest_path=~/ccle-einets/data/output/mccle_evaluation
             mkdir -p ${dest_path}
