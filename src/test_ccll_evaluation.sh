@@ -37,22 +37,22 @@ export TORCH_HOME="${SCRATCH_HOME}/.cache/torch"
 DATASET=${2:-"mnist"}
 PATCH_DIMS=${3:-16}
 CLL_TEST=${4:-"y"}
-CLL=${5:-"y"}
+CCLE=${5:-"y"}
 INPAINTING=${6:-"n"}
-GRID_PROB=${7:-0.15}
-# NUM_BIN_BISECTIONS=${8:-1}
-# NUM_CONDITIONALS=${8:-1}
+# GRID_PROB=${7:-0.15}
+# NUM_BIN_BISECTIONS=${7:-1}
+# NUM_CONDITIONALS=${7:-1}
  
 # Run evaluation script.
-if [ ${CLL_TEST} == "y" ]; then 
+if [ ${CCLL_TEST} == "y" ]; then 
     # Run ccll test evaluation script.
-    if [ ${CLL} == "y" ]; then 
+    if [ ${CCLE} == "y" ]; then 
         echo "Running test ccll for cclle model"
         eval python test_ccll_evaluation.py --data_i /disk/scratch/${USER}/ccle-einets/data/datasets --model_i /disk/scratch/${USER}/ccle-einets/data/output -K 32 -o /disk/scratch/${USER}/ccle-einets/data/output --pd_deltas 7,28 --dataset ${DATASET} --patch_prob ${PATCH_PROB} --patch_size ${PATCH_DIMS} --ccll_test
         src_path=${SCRATCH_HOME}/ccle-einets/data/output/mccle_evaluation
         dest_path=~/ccle-einets/data/output/mccle_evaluation
         mkdir -p ${dest_path}
-    elif [ ${CLL} == "n" ]; then
+    elif [ ${CCLE} == "n" ]; then
         # Note that need to change depending on whether you want to evaluate EM or SGD baseline.
         echo "Running test ccll for MLE model"
         eval python test_ccll_evaluation.py --data_i /disk/scratch/${USER}/ccle-einets/data/datasets --model_i /disk/scratch/${USER}/ccle-einets/data/output -K 32 -o /disk/scratch/${USER}/ccle-einets/data/output --pd_deltas 7,28 --dataset ${DATASET} --em --ccll_test
@@ -62,9 +62,9 @@ if [ ${CLL_TEST} == "y" ]; then
     else
         echo "Invalid argument."
     fi
-elif [ ${CLL_TEST} == "n" ]; then 
+elif [ ${CCLL_TEST} == "n" ]; then 
     # Run FID evaluation script.
-    if [ ${CLL} == "y" ]; then 
+    if [ ${CCLE} == "y" ]; then 
         if [ ${INPAINTING} == "n" ]; then
             # Run FID evaluation script.
             echo "Running fid script for ccle model"
@@ -82,7 +82,7 @@ elif [ ${CLL_TEST} == "n" ]; then
         else
             echo "Invalid argument: $6"
         fi
-    elif [ ${CLL} == "n" ]; then 
+    elif [ ${CCLE} == "n" ]; then 
         # Run FID evaluation script for baselien models
         if [ ${INPAINTING} == "n" ]; then
             echo "Running fid script for MLE model"
