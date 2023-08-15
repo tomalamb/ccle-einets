@@ -149,47 +149,45 @@ def main(args: argparse.Namespace) -> None:
         wandb_project = wandb_project + '_mnist'
         valid_size = 10000
         input_dir = input_dir + '/mnist/'
-        if not ccle:
-            if em:
-                output_dir = output_dir + f'/baseline_training/mnist/use/'
-            else:
-                output_dir = output_dir + f'/baseline_training/mnist/sgd/'
     elif dataset_name == 'f_mnist':
         dataset = Dataset.F_MNIST
         img_dims = {'height': 28, 'width': 28}
         wandb_project = wandb_project + '_f_mnist'
         valid_size = 10000
         input_dir = input_dir + '/f_mnist/'
-        if not ccle:
-            if em:
-                output_dir = output_dir + f'/baseline_training/f_mnist/em/'
-            else:
-                output_dir = output_dir + f'/baseline_training/f_mnist/sgd/'
     else:
         raise ValueError('Dataset not recognised.')
 
     # Depending on the type of training, setup wandb logging and output directory.
-    if grid_sampling:
-        print(
-            f"Using grid patching with grid patch size: {grid_sampling} with grid patch probability: {grid_prob}")
-        identifier = identifier + \
-            f'_grid_sampling_{grid_sampling}/prob_{grid_prob}'
-        wandb_project = wandb_project + '_grid_sampling'
-        output_dir = output_dir + \
-            f'/ccle_training/{dataset_name}/patch_size_{str(patch_dims["width"])}_{str(patch_dims["height"])}/patch_prob_{str(patch_prob)}/grid_sampling/grid_prob_{grid_prob}/'
-    elif bisection_sampling:
-        print(
-            f"Using bisection_sampling sampling with {num_bin_bisections} binary bisection cuts")
-        identifier = identifier + f'_bisection_sampling_{num_bin_bisections}'
-        wandb_project = wandb_project + '_bisection_sampling'
-        output_dir = output_dir + \
-            f'/ccle_training/{dataset_name}/bisection_sampling/num_bin_bisections_{num_bin_bisections}/'
+    if ccle:
+        if grid_sampling:
+            print(
+                f"Using grid patching with grid patch size: {grid_sampling} with grid patch probability: {grid_prob}")
+            identifier = identifier + \
+                f'_grid_sampling_{grid_sampling}/prob_{grid_prob}'
+            wandb_project = wandb_project + '_grid_sampling'
+            output_dir = output_dir + \
+                f'/ccle_training/{dataset_name}/patch_size_{str(patch_dims["width"])}_{str(patch_dims["height"])}/patch_prob_{str(patch_prob)}/grid_sampling/grid_prob_{grid_prob}/'
+        elif bisection_sampling:
+            print(
+                f"Using bisection_sampling sampling with {num_bin_bisections} binary bisection cuts")
+            identifier = identifier + f'_bisection_sampling_{num_bin_bisections}'
+            wandb_project = wandb_project + '_bisection_sampling'
+            output_dir = output_dir + \
+                f'/ccle_training/{dataset_name}/bisection_sampling/num_bin_bisections_{num_bin_bisections}/'
+        else:
+            print("Using uniform random patching")
+            output_dir = output_dir + \
+                f'/ccle_training/{dataset_name}/patch_size_{str(patch_dims["width"])}_{str(patch_dims["height"])}/patch_prob_{str(patch_prob)}/'
+            identifier = identifier + \
+                f'_patch_prob_{str(patch_prob)}_patch_size_{str(patch_dims["width"])}_{str(patch_dims["height"])}'
     else:
-        print("Using uniform random patching")
-        output_dir = output_dir + \
-            f'/ccle_training/{dataset_name}/patch_size_{str(patch_dims["width"])}_{str(patch_dims["height"])}/patch_prob_{str(patch_prob)}/'
-        identifier = identifier + \
-            f'_patch_prob_{str(patch_prob)}_patch_size_{str(patch_dims["width"])}_{str(patch_dims["height"])}'
+        if em:
+            output_dir = output_dir + \
+                f'/baseline_training/{dataset_name}/em/'
+        else:
+            output_dir = output_dir + \
+                f'/baseline_training/{dataset_name}/sgd/'
 
     # Keep track of lls for each epoch of each run.
     run_lls = []
