@@ -35,12 +35,11 @@ export TORCH_HOME="${SCRATCH_HOME}/.cache/torch"
 
 # Change command line arguments based on the evaluation we want to carry out.
 DATASET=${2:-"mnist"}
-PATCH_PROB=${3:-1.0}
-PATCH_DIMS=${4:-16}
-CLL_TEST=${5:-"y"}
-CLL=${6:-"y"}
-INPAINTING=${7:-"n"}
-GRID_PROB=${8:-0.15}
+PATCH_DIMS=${3:-16}
+CLL_TEST=${4:-"y"}
+CLL=${5:-"y"}
+INPAINTING=${6:-"n"}
+GRID_PROB=${7:-0.15}
 # NUM_BIN_BISECTIONS=${8:-1}
 # NUM_CONDITIONALS=${8:-1}
  
