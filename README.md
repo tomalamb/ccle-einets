@@ -22,7 +22,7 @@ In order to get started, intall the required dependencies using the command
 bash setup.sh
 ```
 
-This should create a conda environment named einet_ccle, install the required python dependencies and then download the MNIST and F-MNIST datasets.
+This should create a conda environment named einet_ccle, install the required python dependencies and then download the MNIST and F-MNIST datasets. Note that our code uses WandB for logging.
 
 
 #### Training an EiNet Model
