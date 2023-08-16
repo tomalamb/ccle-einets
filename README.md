@@ -1,4 +1,4 @@
-# Edinburgh MSc AI Dissertation - Alternative Methods of Unsupervised Learning of Tractable Generative Models.
+# Edinburgh MSc AI Dissertation - Self-Supervised Learning Tractable Generative Models.
 
 Code associated with my dissertation on looking into alternative methods of training tractable generative models trainined. Specifically, we focus on Einsum Networks, which are a more general and efficient vectorised form of probablistic circuits (PC) and look into whether conditional composite log-likelihood estimation (CCLE) can act as a viable alternative for training EiNets over MLE training, which often leads to overfitting.
 
