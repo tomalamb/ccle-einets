@@ -28,3 +28,4 @@ config_ssh.sh
 src/mle_finetuning.sh
 src/curriculum_training.py
 data/
+.DS_Store
