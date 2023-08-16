@@ -55,7 +55,7 @@ def maybe_download_mnist():
                 shutil.copyfileobj(f_in, f_out)
 
 
-def load_mnist(path):
+def load_mnist(path = None):
     """Load MNIST dataset.
 
     Args:
@@ -70,6 +70,7 @@ def load_mnist(path):
 
     if path == None:
         path = 'data/datasets/mnist'
+        data_dir = path
     else:
         data_dir = path
 
@@ -111,7 +112,7 @@ def maybe_download_fashion_mnist():
                 shutil.copyfileobj(f_in, f_out)
 
 
-def load_fashion_mnist(path):
+def load_fashion_mnist(path = None):
     """Load fashion-MNIST"""
 
     maybe_download_fashion_mnist()
