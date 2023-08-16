@@ -102,13 +102,13 @@ def grid_prob_solver(img_height, img_width, patch_height, patch_width, num_windo
                                                                                  j - patch_width) // patch_width) * gamma * 1/patch_width * 1/patch_height
                 elif i != 0 and j == 0:
                     exp += ((img_height - i - patch_height) // patch_height) * \
-                        ((img_width - j) // patch_width) * \
+                        ((img_width) // patch_width) * \
                         gamma * 1/patch_width * 1/patch_height
                 elif i == 0 and j != 0:
-                    exp += ((img_height - i) // patch_height) * ((img_width - j -
+                    exp += ((img_height) // patch_height) * ((img_width - j -
                                                                   patch_width) // patch_width) * gamma * 1/patch_width * 1/patch_height
                 else:
-                    exp += ((img_height - i) // patch_height) * ((img_width - j) //
+                    exp += ((img_height) // patch_height) * ((img_width) //
                                                                  patch_width) * gamma * 1/patch_width * 1/patch_height
         return exp
 
