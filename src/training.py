@@ -183,11 +183,11 @@ def main(args: argparse.Namespace) -> None:
                 f'_patch_prob_{str(patch_prob)}_patch_size_{str(patch_dims["width"])}_{str(patch_dims["height"])}'
     else:
         if em:
-            print("Using EM or MLE training")
+            print("Using EM for MLE training")
             output_dir = output_dir + \
                 f'/baseline_training/{dataset_name}/em/'
         else:
-            print("Using SGD training")
+            print("Using SGD for MLE training")
             output_dir = output_dir + \
                 f'/baseline_training/{dataset_name}/sgd/'
 

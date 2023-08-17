@@ -43,7 +43,7 @@ Below we give three examples of how to train EiNets using SGD for MLE, and then 
    a. MLE trained model using EM, $\text{EM}$ model:
 
 
-    python src/training.py -K 32 --max_num_epochs 64 --batch_size 100 --lr 0.01 --em --dataset f_mnist --patience 8 --pd_deltas 7,28
+    python src/training.py -K 32 --max_num_epochs 64 --batch_size 100 --online_em_stepsize 0.05 --dataset f_mnist --patience 8 --pd_deltas 7,28 --em
          
 
    c. Uniform random sampling, $\text{RAND}_4$ model:
