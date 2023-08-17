@@ -16,7 +16,7 @@ The following is a link to their original repository: [Einsum Networks](https://
 
 #### Getting Started
 
-In order to get started, intall the required dependencies using the command
+In order to get started, install the required dependencies using the command
 
 ```
 bash setup.sh
