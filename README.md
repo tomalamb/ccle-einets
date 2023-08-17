@@ -28,7 +28,7 @@ This should create a conda environment named einet_ccle, install the required py
 #### Training an EiNet Model
 To train an EiNet model via CCLE or MLE, execute the following command 
 ```
-python src/test_ccll_evaluation.py --command_line_arguments
+python src/training.py --command_line_arguments
 ```
 adding the the command line arguments as you need for training. 
 
