@@ -162,7 +162,7 @@ def main(args: argparse.Namespace) -> None:
     if ccle:
         if grid_sampling:
             print(
-                f"Using grid patching with grid patch size: {grid_sampling} with grid patch probability: {grid_prob}")
+                f"Using grid patching with grid patch probability: {grid_prob}")
             identifier = identifier + \
                 f'_grid_sampling_{grid_sampling}_grid_prob_{grid_prob}'
             wandb_project = wandb_project + '_grid_sampling'
